@@ -2,11 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
+// BLUETOOTH
 import 'package:flutter_blue/flutter_blue.dart';
+// CONTROLLERS
+import 'package:sismic_stream/src/controller/xy.controller.dart';
+import 'package:sismic_stream/src/controller/xz.controller.dart';
+import 'package:sismic_stream/src/controller/zy.controller.dart';
+
+// POSITIONS
 import 'package:sismic_stream/src/view/shared/frequency/XYFrequency.dart';
 import 'package:sismic_stream/src/view/shared/frequency/XZFrequency.dart';
 import 'package:sismic_stream/src/view/shared/frequency/ZYFrequency.dart';
+
+// FREQUENCY
 import 'package:sismic_stream/src/view/shared/position/xyPosition.dart';
 import 'package:sismic_stream/src/view/shared/position/xzPosition.dart';
 import 'package:sismic_stream/src/view/shared/position/zyPosition.dart';
@@ -22,30 +30,11 @@ class PlanesPagePhone extends StatefulWidget {
 class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   final String SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
   final String CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+  final XYController _controllerXY = XYController();
+  final XZController _controllerXZ = XZController();
+  final ZYController _controllerZY = ZYController();
   Stream<List<int>> stream;
   bool isReady;
-
-  int _x;
-  int _y;
-  int _z;
-  double _g;
-  int _hz;
-  int _hzMax;
-  int _hzMin;
-  int _contHz = 0;
-
-  _verifyHz(int newHz) {
-    if (_contHz == 0) {
-      _hzMax = newHz;
-      _hzMin = newHz;
-      _contHz++;
-    } else {
-      if (newHz > _hzMax)
-        _hzMax = newHz;
-      if (newHz < _hzMin)
-        _hzMin = newHz;
-    }
-  }
 
   @override
   void initState() {
@@ -146,19 +135,19 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     return stringData.split('|').map((e) => num.parse(e)).toList();
   }
 
-  // View Functions
+  // View Functions //
   _viewXY() {
     return Column(
       children: <Widget>[
         XYPosition(
-          xValue: this._x,
-          yValue: this._y,
-          gValue: this._g,
+          xValue: _controllerXY.x,
+          yValue: _controllerXY.y,
+          gValue: _controllerXY.g,
         ),
         XYFrequency(
-          hzMax: this._hzMax,
-          hz: this._hz,
-          hzMin: this._hzMin,
+          hzMax: _controllerXY.hzMaxXY,
+          hz: _controllerXY.hzXY,
+          hzMin:_controllerXY.hzMinXY,
         )
       ],
     );
@@ -168,14 +157,14 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     return Column(
       children: <Widget>[
         XZPosition(
-          xValue: this._x,
-          zValue: this._z,
-          gValue: this._g,
+          xValue: _controllerXZ.x,
+          zValue: _controllerXZ.z,
+          gValue: _controllerXZ.g,
         ),
         XZFrequency(
-          hzMax: this._hzMax,
-          hz: this._hz,
-          hzMin: this._hzMin,
+          hzMax: _controllerXZ.hzMaxXZ,
+          hz: _controllerXZ.hzMaxXZ,
+          hzMin: _controllerXZ.hzMinXZ,
         )
       ],
     );
@@ -185,14 +174,14 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     return Column(
       children: <Widget>[
         ZYPosition(
-          zValue: this._z,
-          yValue: this._y,
-          gValue: this._g,
+          zValue: _controllerZY.z,
+          yValue: _controllerZY.y,
+          gValue: _controllerZY.g,
         ),
         ZYFrequency(
-          hzMax: this._hzMax,
-          hz: this._hz,
-          hzMin: this._hzMin,
+          hzMax: _controllerZY.hzMaxZY,
+          hz: _controllerZY.hzZY,
+          hzMin: _controllerZY.hzMinZY,
         )
       ],
     );
@@ -236,12 +225,24 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
         }
         if (snapshot?.connectionState == ConnectionState.active) {
           List<num> arrData = _listParser(snapshot.data);
-          _x = arrData[0];
-          _y = arrData[1];
-          _z = arrData[2];
-          _g = arrData[3];
-          _hz = arrData[4];
-          _verifyHz(_hz);
+          // XY PLANE
+          _controllerXY.changeX(arrData[0]);
+          _controllerXY.changeY(arrData[1]);
+          _controllerXY.changeG(arrData[3]);
+          _controllerXY.changeHzXY(arrData[4]);
+          _controllerXY.verifyHzXY(arrData[4]);
+          // XZ PLANE
+          _controllerXZ.changeX(arrData[0]);
+          _controllerXZ.changeZ(arrData[1]);
+          _controllerXZ.changeG(arrData[3]);
+          _controllerXZ.changeHzXZ(arrData[4]);
+          _controllerXZ.verifyHzXZ(arrData[4]);
+          // ZYPLANE
+          _controllerZY.changeZ(arrData[0]);
+          _controllerZY.changeY(arrData[1]);
+          _controllerZY.changeG(arrData[3]);
+          _controllerZY.changeHzZY(arrData[4]);
+          _controllerZY.verifyHzZY(arrData[4]);
           return TabBarView(
             children: <Widget>[
               _viewXY(),

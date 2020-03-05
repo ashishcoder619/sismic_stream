@@ -27,8 +27,13 @@ dependencies:
   syncfusion_flutter_charts: ^1.0.0-beta.4
   flutter_blue: ^0.6.2
   geolocator: ^5.2.1
+  mobx: 
+  flutter_mobx: 
+  
 
 dev_dependencies:
+  mobx_codegen:
+  build_runner:
   flutter_test:
     sdk: flutter
 
