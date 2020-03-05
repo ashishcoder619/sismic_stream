@@ -1,18 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './drawing/circleMachine.dart';
 import './drawing/xyLimit.dart';
 
-class XYPosition extends StatelessWidget {
-  final Stream<List<int>> stream;
-  XYPosition({this.stream});
 
-  List<num> _listParser(List<int> dataFromDevice) {
-    String stringData = utf8.decode(dataFromDevice);
-    return stringData.split('|').map((e) => num.parse(e)).toList();
-  }
+class XYPosition extends StatelessWidget {
+  final int xValue;
+  final int yValue;
+  final double gValue;
+  XYPosition({this.xValue, this.yValue, this.gValue});
 
   Widget _position(int xValue, int yValue, double gValue) {
     return Stack(
@@ -61,21 +57,10 @@ class XYPosition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<int>>(
-      stream: stream,
-      builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
-        if (snapshot?.connectionState == ConnectionState.active) {
-          int xValue = _listParser(snapshot.data)[0];
-          int yValue = _listParser(snapshot.data)[1];
-          double gValue = _listParser(snapshot.data)[3];
-
-          return _position(xValue, yValue, gValue);
-        }
-        return Container();
-      },
+    return _position(
+      xValue,
+      yValue,
+      gValue,
     );
   }
 }

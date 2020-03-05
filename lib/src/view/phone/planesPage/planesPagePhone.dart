@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:sismic_stream/src/view/shared/frequency/XYFrequency.dart';
+import 'package:sismic_stream/src/view/shared/frequency/XZFrequency.dart';
+import 'package:sismic_stream/src/view/shared/frequency/ZYFrequency.dart';
 import 'package:sismic_stream/src/view/shared/position/xyPosition.dart';
 import 'package:sismic_stream/src/view/shared/position/xzPosition.dart';
 import 'package:sismic_stream/src/view/shared/position/zyPosition.dart';
@@ -21,6 +24,28 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   final String CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
   Stream<List<int>> stream;
   bool isReady;
+
+  int _x;
+  int _y;
+  int _z;
+  double _g;
+  int _hz;
+  int _hzMax;
+  int _hzMin;
+  int _contHz = 0;
+
+  _verifyHz(int newHz) {
+    if (_contHz == 0) {
+      _hzMax = newHz;
+      _hzMin = newHz;
+      _contHz++;
+    } else {
+      if (newHz > _hzMax)
+        _hzMax = newHz;
+      if (newHz < _hzMin)
+        _hzMin = newHz;
+    }
+  }
 
   @override
   void initState() {
@@ -116,12 +141,59 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     Navigator.of(context).pop(true);
   }
 
+  List<num> _listParser(List<int> dataFromDevice) {
+    String stringData = utf8.decode(dataFromDevice);
+    return stringData.split('|').map((e) => num.parse(e)).toList();
+  }
+
   // View Functions
-  _viewXY(Stream<List<int>> myStream) {
+  _viewXY() {
     return Column(
       children: <Widget>[
-        // XYPosition(stream: myStream),
-        XYFrequency(stream: myStream),
+        XYPosition(
+          xValue: this._x,
+          yValue: this._y,
+          gValue: this._g,
+        ),
+        XYFrequency(
+          hzMax: this._hzMax,
+          hz: this._hz,
+          hzMin: this._hzMin,
+        )
+      ],
+    );
+  }
+
+  _viewXZ(){
+    return Column(
+      children: <Widget>[
+        XZPosition(
+          xValue: this._x,
+          zValue: this._z,
+          gValue: this._g,
+        ),
+        XZFrequency(
+          hzMax: this._hzMax,
+          hz: this._hz,
+          hzMin: this._hzMin,
+        )
+      ],
+    );
+  }
+
+  _viewZY(){
+    return Column(
+      children: <Widget>[
+        ZYPosition(
+          zValue: this._z,
+          yValue: this._y,
+          gValue: this._g,
+        ),
+        ZYFrequency(
+          hzMax: this._hzMax,
+          hz: this._hz,
+          hzMin: this._hzMin,
+        )
       ],
     );
   }
@@ -129,7 +201,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   _appBar() {
     return AppBar(
       backgroundColor: Colors.white,
-      actions: <Widget>[],
       centerTitle: true,
       title: Text(
         'SISMIC',
@@ -157,17 +228,30 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   }
 
   _body() {
-    return TabBarView(
-      children: <Widget>[
-        // XYPosition(stream: stream,),
-        _viewXY(stream),
-        XZPosition(
-          stream: stream,
-        ),
-        ZYPosition(
-          stream: stream,
-        ),
-      ],
+    return StreamBuilder<List<int>>(
+      stream: stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        if (snapshot?.connectionState == ConnectionState.active) {
+          List<num> arrData = _listParser(snapshot.data);
+          _x = arrData[0];
+          _y = arrData[1];
+          _z = arrData[2];
+          _g = arrData[3];
+          _hz = arrData[4];
+          _verifyHz(_hz);
+          return TabBarView(
+            children: <Widget>[
+              _viewXY(),
+              _viewXZ(),
+              _viewZY(),
+            ],
+          );
+        }
+        return Container();
+      },
     );
   }
 

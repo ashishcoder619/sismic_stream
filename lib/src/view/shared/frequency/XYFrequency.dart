@@ -1,37 +1,18 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './graphic/XYGraphic.dart';
 
-class HzMetric {
-  int _hzMax;
-  int _hzMin;
-  set changeHzMax(int newHzMax) => newHzMax > _hzMax ? _hzMax = newHzMax : _hzMax;
-  set changeHzMin(int newHzMin) => newHzMin < _hzMin ? _hzMin = newHzMin : _hzMin;
-  int get hzMax => _hzMax;
-  int get hzMin => _hzMin;
-}
-
 class XYFrequency extends StatelessWidget {
-  final Stream<List<int>> stream;
-  XYFrequency({this.stream});
-  int hzMax = 0;
-  int hzMin = 0;
-  int contHz = 0;
+  final int hz;
+  final int hzMax;
+  final int hzMin;
+  XYFrequency({
+    this.hzMax,
+    this.hz,
+    this.hzMin,
+  });
 
-  List<num> _listParser(List<int> dataFromDevice) {
-    String stringData = utf8.decode(dataFromDevice);
-    return stringData.split('|').map((e) => num.parse(e)).toList();
-  }
-
-  _hzMax(int hz) {
-    if (this.contHz == 1) {
-        hzMax = hz;
-    } else if (hz > hzMax) {
-        hzMax = hz;
-    }
-      contHz++;
+  _hzMax() {
     return Container(
       margin: const EdgeInsets.only(
         right: 20.0,
@@ -41,7 +22,7 @@ class XYFrequency extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Text(
-            "${this.hzMax}",
+            "$hzMax",
             style: TextStyle(fontFamily: 'Quebec Black', fontSize: 15.0),
           ),
           Text(
@@ -57,7 +38,7 @@ class XYFrequency extends StatelessWidget {
     );
   }
 
-  _hz(int hz) {
+  _hz() {
     return Stack(
       alignment: Alignment(0, 0),
       children: <Widget>[
@@ -83,13 +64,7 @@ class XYFrequency extends StatelessWidget {
     );
   }
 
-  _hzMin(int hz) {
-    if (this.contHz == 1) {
-        hzMin = hz;
-    } else if (hz > hzMin) {
-        hzMin = hz;
-    }
-      contHz++;
+  _hzMin() {
     return Container(
       margin: const EdgeInsets.only(
         right: 20.0,
@@ -99,7 +74,7 @@ class XYFrequency extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "${this.hzMin}",
+            "$hzMin",
             style: TextStyle(fontFamily: 'Quebec Black', fontSize: 15.0),
           ),
           Text(
@@ -117,28 +92,13 @@ class XYFrequency extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<int>>(
-      stream: stream,
-      initialData: [],
-      builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
-        if (snapshot?.connectionState == ConnectionState.active) {
-          int hz = _listParser(snapshot.data)[4];
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _hzMax(hz),
-              _hz(hz),
-              _hzMin(hz),
-            ],
-          );
-        }
-        return Container();
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        _hzMax(),
+        _hz(),
+        _hzMin(),
+      ],
     );
   }
 }
-
-
