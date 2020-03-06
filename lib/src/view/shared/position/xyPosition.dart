@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './drawing/circleMachine.dart';
-import './drawing/xyLimit.dart';
-
+// import './drawing/xyLimit.dart';
+import 'drawing/xyRadar.dart';
 
 class XYPosition extends StatelessWidget {
   final int xValue;
@@ -11,6 +11,7 @@ class XYPosition extends StatelessWidget {
   XYPosition({this.xValue, this.yValue, this.gValue});
 
   Widget _position(int xValue, int yValue, double gValue) {
+    print("*********************x: $xValue y: $yValue************************");
     return Stack(
       alignment: Alignment(0, 0),
       children: <Widget>[
@@ -21,15 +22,26 @@ class XYPosition extends StatelessWidget {
           alignment: Alignment(0, 0),
           children: <Widget>[
             CustomPaint(
-              painter: CircleXY(
-                x: xValue,
-                y: yValue,
+              painter: XYRadar(
+                // xValue: xValue,
+                // yValue: yValue,
+                xValue: 0,
+                yValue: 0,
               ),
               child: Center(),
             ),
+            // CustomPaint(
+            //   painter: XYLimit(
+            //     x: xValue,
+            //     y: yValue,
+            //   ),
+            //   child: Center(),
+            // ),
             Marker(
-              x: xValue,
-              y: yValue,
+              // x: xValue,
+              // y: yValue,
+              x: 19,
+              y: 0,
             ),
           ],
         ),
@@ -77,7 +89,7 @@ class Marker extends StatelessWidget {
     return Transform(
       transform: Matrix4.translationValues(x.toDouble(), y.toDouble(), 0.0),
       child: CustomPaint(
-        painter: CircleMachine(),
+        painter: CircleMachine(x: this.x, y: this.y),
         child: Center(),
       ),
     );

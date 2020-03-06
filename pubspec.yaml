@@ -28,7 +28,7 @@ dependencies:
   flutter_blue: ^0.6.2
   geolocator: ^5.2.1
   mobx: 
-  flutter_mobx: 
+  flutter_mobx:
   
 
 dev_dependencies:

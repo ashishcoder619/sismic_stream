@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:ui' as ui;
 
-class CircleXY extends CustomPainter{
+class XYLimit extends CustomPainter{
  int x;
  int y;
 
-  CircleXY({this.x, this.y});
+  XYLimit({this.x, this.y});
 
   @override
   void paint(ui.Canvas canvas, ui.Size size ) {
