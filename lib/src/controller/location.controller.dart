@@ -10,7 +10,7 @@ class Location {
 
   Location() {
     Timer.periodic(
-      Duration(milliseconds: 2000),
+      Duration(milliseconds: 500),
       (timer) async {
         await Geolocator().isLocationServiceEnabled().then(
           (value) {

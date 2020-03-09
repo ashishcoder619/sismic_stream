@@ -340,6 +340,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  modern_charts:
+    dependency: "direct main"
+    description:
+      name: modern_charts
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.19"
   node_interop:
     dependency: transitive
     description:
