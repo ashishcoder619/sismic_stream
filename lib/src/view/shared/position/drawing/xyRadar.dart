@@ -30,8 +30,8 @@ class XYRadar extends CustomPainter {
       ..strokeWidth = 1.0
       ..isAntiAlias = true;
 
-    // var features = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15", "A16", "A17", "A18", "A19", "A20"];
-    var features = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"];
+    var features = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15", "A16"];
+    // var features = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"];
     var angle = (2 * pi) / features.length;
     const double featureLabelFontSize = 16;
     const double featureLabelFontWidth = 12;
@@ -42,8 +42,9 @@ class XYRadar extends CustomPainter {
 
       var featureOffset =
           Offset(centerX + radius * xAngle, centerY + radius * yAngle);
-
-      canvas.drawLine(centerOffset, featureOffset, ticksPaint);
+      
+      // LINES OF AXIS
+      // canvas.drawLine(centerOffset, featureOffset, ticksPaint);
 
       var labelYOffset = yAngle < 0 ? -featureLabelFontSize : 0;
       var labelXOffset =
@@ -63,22 +64,62 @@ class XYRadar extends CustomPainter {
             Offset(featureOffset.dx + labelXOffset,
                 featureOffset.dy + labelYOffset));
     });
+
+    Map<String, bool> quadrant = {
+      "first": xValue > 0 && yValue > 0,
+      "second": xValue < 0 && yValue > 0,
+      "third": xValue < 0 && yValue < 0,
+      "fourth": xValue > 0 && yValue < 0,
+    };
+
+
+    // fourth quadrant
+    int a1 = quadrant["fourth"] || quadrant["third"] ? -yValue : 13;
+    int a2 = quadrant["fourth"] ? -yValue / cos(22.5 * 0.0174533) : 13;
+    int a3 = quadrant["fourth"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
+    int a4 = quadrant["fourth"] ? xValue / cos(22.5 * 0.0174533) : 13;
+
+    // first quadrant
+    int a5 = quadrant["first"] || quadrant["fourth"] ? xValue : 13;                                                                                         
+    int a6 = quadrant["first"] ? yValue / cos(22.5 * 0.0174533) : 13;                                                                                                                                                               
+    int a7 = quadrant["first"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;                                                                                                                                                               
+    int a8 = quadrant["first"] ? xValue / cos(22.5 * 0.0174533) : 13;                                                                                         
     
-    double quadrant = sqrt((xValue * xValue) + (yValue * yValue));
-    MaterialColor graphColorSatate = quadrant >= 20 ? Colors.red : Colors.green;
+    // second quadrant
+    int a9 = quadrant["second"] || quadrant["first"] ? yValue : 13;
+    int a10 = quadrant["second"] ? yValue / cos(22.5 * 0.0174533) : 13;
+    int a11 = quadrant["second"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
+    int a12 = quadrant["second"] ? -xValue / cos(22.5 * 0.0174533) : 13;
+    
+    // third quadrant
+    int a13 = quadrant["third"] || quadrant["second"] ? -xValue : 13;
+    int a14 = quadrant["third"] ? -xValue / cos(22.5 * 0.0174533) : 13;
+    int a15 = quadrant["third"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
+    int a16 = quadrant["third"] ? -yValue / cos(22.5 * 0.0174533)  : 13;
+
+    // MaterialColor graphColorSatate = quadrant >= 20 ? Colors.red : Colors.green;
+    MaterialColor graphColorSatate = Colors.green;
     List<MaterialColor> graphColors = [graphColorSatate];
     var scale = radius / ticks.last;
 
     List data = [
       [
-        10,
-        10,
-        xValue,
-        quadrant,
-        yValue,
-        10,
-        10,
-        10,
+        a1,
+        a2,
+        a3,
+        a4,
+        a5,
+        a6,
+        a7,
+        a8,
+        a9,
+        a10,
+        a11,
+        a12,
+        a13,
+        a14,
+        a15,
+        a16,
       ],
     ];
 

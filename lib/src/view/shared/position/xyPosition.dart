@@ -23,7 +23,7 @@ class XYPosition extends StatelessWidget {
           children: <Widget>[
             CustomPaint(
               painter: XYRadar(
-                xValue: xValue,
+                xValue: -xValue,
                 yValue: yValue,
               ),
               child: Center(),
@@ -36,7 +36,7 @@ class XYPosition extends StatelessWidget {
             //   child: Center(),
             // ),
             Marker(
-              x: xValue,
+              x: -xValue,
               y: yValue,
             ),
           ],
