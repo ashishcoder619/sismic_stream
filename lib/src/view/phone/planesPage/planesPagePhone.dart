@@ -135,54 +135,84 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     return stringData.split('|').map((e) => num.parse(e)).toList();
   }
 
-  // View Functions //
+    // View Functions //
   _viewXY() {
     return Column(
       children: <Widget>[
-        XYPosition(
-          xValue: _controllerXY.x,
-          yValue: _controllerXY.y,
-          gValue: _controllerXY.g,
+        Flexible(
+          flex: 7,
+          child: Center(
+            child: XYPosition(
+              xValue: _controllerXY.x,
+              yValue: _controllerXY.y,
+              gValue: _controllerXY.g,
+            ),
+          ),
         ),
-        XYFrequency(
-          hzMax: _controllerXY.hzMaxXY,
-          hz: _controllerXY.hzXY,
-          hzMin:_controllerXY.hzMinXY,
-        )
+        Flexible(
+          flex: 3,
+          child: Center(
+            child: XYFrequency(
+              hzMax: _controllerXY.hzMaxXY,
+              hz: _controllerXY.hzXY,
+              hzMin: _controllerXY.hzMinXY,
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  _viewXZ(){
+  _viewXZ() {
     return Column(
       children: <Widget>[
-        XZPosition(
-          xValue: _controllerXZ.x,
-          zValue: _controllerXZ.z,
-          gValue: _controllerXZ.g,
+        Flexible(
+          flex: 7,
+          child: Center(
+            child: XZPosition(
+              xValue: _controllerXZ.x,
+              zValue: _controllerXZ.z,
+              gValue: _controllerXZ.g,
+            ),
+          ),
         ),
-        XZFrequency(
-          hzMax: _controllerXZ.hzMaxXZ,
-          hz: _controllerXZ.hzMaxXZ,
-          hzMin: _controllerXZ.hzMinXZ,
-        )
+        Flexible(
+          flex: 3,
+          child: Center(
+            child: XZFrequency(
+              hzMax: _controllerXZ.hzMaxXZ,
+              hz: _controllerXZ.hzMaxXZ,
+              hzMin: _controllerXZ.hzMinXZ,
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  _viewZY(){
+  _viewZY() {
     return Column(
       children: <Widget>[
-        ZYPosition(
-          zValue: _controllerZY.z,
-          yValue: _controllerZY.y,
-          gValue: _controllerZY.g,
+        Flexible(
+          flex: 7,
+          child: Center(
+            child: ZYPosition(
+              zValue: _controllerZY.z,
+              yValue: _controllerZY.y,
+              gValue: _controllerZY.g,
+            ),
+          ),
         ),
-        ZYFrequency(
-          hzMax: _controllerZY.hzMaxZY,
-          hz: _controllerZY.hzZY,
-          hzMin: _controllerZY.hzMinZY,
-        )
+        Flexible(
+          flex: 3,
+          child: Center(
+            child: ZYFrequency(
+              hzMax: _controllerZY.hzMaxZY,
+              hz: _controllerZY.hzZY,
+              hzMin: _controllerZY.hzMinZY,
+            ),
+          ),
+        ),
       ],
     );
   }

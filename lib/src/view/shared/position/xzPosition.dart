@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sismic_stream/src/view/shared/position/drawing/xzRadar.dart';
 import './drawing/circleMachine.dart';
 import 'drawing/xzLimit.dart';
 
@@ -20,16 +21,16 @@ class XZPosition extends StatelessWidget {
           alignment: Alignment(0, 0),
           children: <Widget>[
             CustomPaint(
-              painter: CircleXZ(
-                x: xValue,
-                z: zValue,
+              painter: XZRadar(
+                xValue: xValue,
+                zValue: -zValue,
               ),
               child: Center(),
             ),
-            Marker(
-              x: xValue,
-              z: zValue,
-            ),
+            // Marker(
+            //   x: xValue,
+            //   z: zValue,
+            // ),
           ],
         ),
         Row(

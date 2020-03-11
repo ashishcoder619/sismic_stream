@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sismic_stream/src/view/shared/position/drawing/zyRadar.dart';
 import './drawing/circleMachine.dart';
 import 'drawing/zyLimit.dart';
 
@@ -8,17 +9,6 @@ class ZYPosition extends StatelessWidget {
   final int yValue;
   final double gValue;
   ZYPosition({this.zValue, this.yValue, this.gValue});
-  // PARSES
-  // String _dataParser(List<int> dataFromDevice) {
-  //   return utf8.decode(dataFromDevice);
-  // }
-
-  // List _listParser(String stringData) {
-  //   List arrString = stringData.split('|');
-  //   print('*************ARRAY DE DADOS: $arrString****************');
-  //   // double.parse(arrString[3]); //TestFunction
-  //   return arrString;
-  // }
   _position(int zValue, int yValue, double gValue) {
     return Stack(
       alignment: Alignment(0, 0),
@@ -30,16 +20,16 @@ class ZYPosition extends StatelessWidget {
           alignment: Alignment(0, 0),
           children: <Widget>[
             CustomPaint(
-              painter: CircleZY(
-                z: zValue,
-                y: yValue,
+              painter: ZYRadar(
+                zValue: zValue,
+                yValue: yValue,
               ),
               child: Center(),
             ),
-            Marker(
-              z: zValue,
-              y: yValue,
-            ),
+            // Marker(
+            //   z: zValue,
+            //   y: yValue,
+            // ),
           ],
         ),
         Row(

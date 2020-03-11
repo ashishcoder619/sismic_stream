@@ -35,10 +35,10 @@ class XYPosition extends StatelessWidget {
             //   ),
             //   child: Center(),
             // ),
-            Marker(
-              x: -xValue,
-              y: yValue,
-            ),
+            // Marker(
+            //   x: -xValue,
+            //   y: yValue,
+            // ),
           ],
         ),
         Row(
