@@ -46,7 +46,7 @@ class XYRadar extends CustomPainter {
           Offset(centerX + radius * xAngle, centerY + radius * yAngle);
       
       // LINES OF AXIS
-      canvas.drawLine(centerOffset, featureOffset, ticksPaint);
+      // canvas.drawLine(centerOffset, featureOffset, ticksPaint);
 
       var labelYOffset = yAngle < 0 ? -featureLabelFontSize : 0;
       var labelXOffset =

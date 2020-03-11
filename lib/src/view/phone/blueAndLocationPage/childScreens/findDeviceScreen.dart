@@ -48,7 +48,7 @@ class FindDevicesScreen extends StatelessWidget {
                                         ),
                                       );
                                     }
-                                    return null; //Text(snapshot.data.toString());
+                                    return Container(); //Text(snapshot.data.toString());
                                   },
                                 ),
                               )
@@ -69,7 +69,6 @@ class FindDevicesScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) {
                                 r.device.connect();
-                                
                                 return PlanesPagePhone(device: r.device);
                               },
                             ),

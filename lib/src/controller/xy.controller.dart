@@ -18,6 +18,10 @@ abstract class _XYControllerBase with Store {
   int hzMinXY;
   int _contHz = 0;
 
+  // List pointPosition = [];
+  // @action
+  // changepointPosition(int newX) => x = newX;
+
   @action
   changeX(int newX) => x = newX;
   @action

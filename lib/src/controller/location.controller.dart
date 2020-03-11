@@ -10,7 +10,9 @@ class Location {
 
   Location() {
     Timer.periodic(
-      Duration(milliseconds: 500),
+      Duration(
+        milliseconds: 200,
+      ),
       (timer) async {
         await Geolocator().isLocationServiceEnabled().then(
           (value) {
@@ -22,4 +24,3 @@ class Location {
     );
   }
 }
-
