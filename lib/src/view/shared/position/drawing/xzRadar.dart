@@ -2,11 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class XYRadar extends CustomPainter {
+class XZRadar extends CustomPainter {
   int xValue;
-  int yValue;
-  bool invalidPosition = true;
-  XYRadar({this.xValue, this.yValue});
+  int zValue;
+  XZRadar({this.xValue, this.zValue});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -20,7 +19,6 @@ class XYRadar extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
       ..isAntiAlias = true;
-
 
     canvas.drawCircle(centerOffset, radius, outlinePaint);
 
@@ -46,7 +44,7 @@ class XYRadar extends CustomPainter {
           Offset(centerX + radius * xAngle, centerY + radius * yAngle);
       
       // LINES OF AXIS
-      canvas.drawLine(centerOffset, featureOffset, ticksPaint);
+      // canvas.drawLine(centerOffset, featureOffset, ticksPaint);
 
       var labelYOffset = yAngle < 0 ? -featureLabelFontSize : 0;
       var labelXOffset =
@@ -68,40 +66,40 @@ class XYRadar extends CustomPainter {
     });
 
     Map<String, bool> quadrant = {
-      "first": xValue > 0 && yValue > 0,
-      "second": xValue < 0 && yValue > 0,
-      "third": xValue < 0 && yValue < 0,
-      "fourth": xValue > 0 && yValue < 0,
+      "first": xValue > 0 && zValue > 0,
+      "second": xValue < 0 && zValue > 0,
+      "third": xValue < 0 && zValue < 0,
+      "fourth": xValue > 0 && zValue < 0,
     };
 
 
     // fourth quadrant
-    num a1 = quadrant["fourth"] || quadrant["third"] ? -yValue : 13;
-    num a2 = quadrant["fourth"] ? -yValue / cos(22.5 * 0.0174533) : 13;
-    num a3 = quadrant["fourth"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
+    num a1 = quadrant["fourth"] || quadrant["third"] ? -zValue : 13;
+    num a2 = quadrant["fourth"] ? -zValue / cos(22.5 * 0.0174533) : 13;
+    num a3 = quadrant["fourth"] ? sqrt((xValue * xValue)+(zValue*zValue)) : 13;
     num a4 = quadrant["fourth"] ? xValue / cos(22.5 * 0.0174533) : 13;
 
     // first quadrant
     num a5 = quadrant["first"] || quadrant["fourth"] ? xValue : 13;                                                                                         
-    num a6 = quadrant["first"] ? yValue / cos(22.5 * 0.0174533) : 13;                                                                                                                                                               
-    num a7 = quadrant["first"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;                                                                                                                                                               
+    num a6 = quadrant["first"] ? zValue / cos(22.5 * 0.0174533) : 13;                                                                                                                                                               
+    num a7 = quadrant["first"] ? sqrt((xValue * xValue)+(zValue*zValue)) : 13;                                                                                                                                                               
     num a8 = quadrant["first"] ? xValue / cos(22.5 * 0.0174533) : 13;                                                                                         
     
     // second quadrant
-    num a9 = quadrant["second"] || quadrant["first"] ? yValue : 13;
-    num a10 = quadrant["second"] ? yValue / cos(22.5 * 0.0174533) : 13;
-    num a11 = quadrant["second"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
+    num a9 = quadrant["second"] || quadrant["first"] ? zValue : 13;
+    num a10 = quadrant["second"] ? zValue / cos(22.5 * 0.0174533) : 13;
+    num a11 = quadrant["second"] ? sqrt((xValue * xValue)+(zValue*zValue)) : 13;
     num a12 = quadrant["second"] ? -xValue / cos(22.5 * 0.0174533) : 13;
     
     // third quadrant
     num a13 = quadrant["third"] || quadrant["second"] ? -xValue : 13;
     num a14 = quadrant["third"] ? -xValue / cos(22.5 * 0.0174533) : 13;
-    num a15 = quadrant["third"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
-    num a16 = quadrant["third"] ? -yValue / cos(22.5 * 0.0174533)  : 13;
+    num a15 = quadrant["third"] ? sqrt((xValue * xValue)+(zValue*zValue)) : 13;
+    num a16 = quadrant["third"] ? -zValue / cos(22.5 * 0.0174533)  : 13;
 
     // MaterialColor graphColorSatate = quadrant >= 20 ? Colors.red : Colors.green;
 
-    List<List<num>> data = [
+    List data = [
       [
         a1,
         a2,
@@ -122,16 +120,16 @@ class XYRadar extends CustomPainter {
       ],
     ];
     MaterialColor _invalidPosition(){
-      List positions = [...data[0], xValue, yValue];
+      List positions = [...data[0], xValue, zValue];
       List invalids = positions.where((e) => e > 20).toList();
       return invalids.length > 0 ? Colors.red : Colors.green;
     }
-    
+      
     
     MaterialColor graphColorSatate = _invalidPosition();
     List<MaterialColor> graphColors = [graphColorSatate];
     var scale = radius / ticks.last;
-    
+
     data.asMap().forEach(
       (index, graph) {
         var graphPaint = Paint()
@@ -171,7 +169,7 @@ class XYRadar extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(XYRadar oldDelegate) {
+  bool shouldRepaint(XZRadar oldDelegate) {
     return false;
   }
 }

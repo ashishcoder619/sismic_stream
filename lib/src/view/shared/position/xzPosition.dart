@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './drawing/circleMachine.dart';
-import 'drawing/xzLimit.dart';
+// import 'drawing/xzLimit.dart';
+import 'drawing/xzRadar.dart';
 
 class XZPosition extends StatelessWidget {
   final int xValue;
@@ -20,16 +21,16 @@ class XZPosition extends StatelessWidget {
           alignment: Alignment(0, 0),
           children: <Widget>[
             CustomPaint(
-              painter: CircleXZ(
-                x: xValue,
-                z: zValue,
+              painter: XZRadar(
+                xValue: -xValue,
+                zValue: zValue,
               ),
               child: Center(),
             ),
-            Marker(
-              x: xValue,
-              z: zValue,
-            ),
+            // Marker(
+            //   x: -xValue,
+            //   z: zValue,
+            // ),
           ],
         ),
         Row(
@@ -75,9 +76,8 @@ class Marker extends StatelessWidget {
     print("x: $x, z: $z");
     return Transform(
       transform: Matrix4.translationValues(x.toDouble(), z.toDouble(), 0.0),
-      // child: CircleAvatar(radius: 100, backgroundColor: Colors.lightGreen,));
       child: CustomPaint(
-        painter: CircleMachine(),
+        painter: CircleMachine(x: this.x, y: this.z),
         child: Center(),
       ),
     );

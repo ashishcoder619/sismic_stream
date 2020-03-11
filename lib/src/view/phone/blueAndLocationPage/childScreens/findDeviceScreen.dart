@@ -69,6 +69,7 @@ class FindDevicesScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) {
                                 r.device.connect();
+                                
                                 return PlanesPagePhone(device: r.device);
                               },
                             ),

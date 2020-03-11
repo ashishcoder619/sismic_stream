@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './drawing/circleMachine.dart';
-import 'drawing/zyLimit.dart';
+// import 'drawing/zyLimit.dart';
+import 'drawing/zyRadar.dart';
 
 class ZYPosition extends StatelessWidget {
   final int zValue;
   final int yValue;
   final double gValue;
   ZYPosition({this.zValue, this.yValue, this.gValue});
-  // PARSES
-  // String _dataParser(List<int> dataFromDevice) {
-  //   return utf8.decode(dataFromDevice);
-  // }
-
-  // List _listParser(String stringData) {
-  //   List arrString = stringData.split('|');
-  //   print('*************ARRAY DE DADOS: $arrString****************');
-  //   // double.parse(arrString[3]); //TestFunction
-  //   return arrString;
-  // }
   _position(int zValue, int yValue, double gValue) {
     return Stack(
       alignment: Alignment(0, 0),
@@ -30,16 +20,16 @@ class ZYPosition extends StatelessWidget {
           alignment: Alignment(0, 0),
           children: <Widget>[
             CustomPaint(
-              painter: CircleZY(
-                z: zValue,
-                y: yValue,
+              painter: ZYRadar(
+                zValue: zValue,
+                yValue: yValue,
               ),
               child: Center(),
             ),
-            Marker(
-              z: zValue,
-              y: yValue,
-            ),
+            // Marker(
+            //   z: zValue,
+            //   y: yValue,
+            // ),
           ],
         ),
         Row(
@@ -84,9 +74,8 @@ class Marker extends StatelessWidget {
     print("z: $z, y: $y");
     return Transform(
       transform: Matrix4.translationValues(z.toDouble(), y.toDouble(), 0.0),
-      // child: CircleAvatar(radius: 100, backgroundColor: Colors.lightGreen,));
       child: CustomPaint(
-        painter: CircleMachine(),
+        painter: CircleMachine(x: this.z, y: this.y),
         child: Center(),
       ),
     );

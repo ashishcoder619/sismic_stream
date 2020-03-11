@@ -187,7 +187,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  _appBar() {
+  _appBarPlanes() {
     return AppBar(
       backgroundColor: Colors.white,
       centerTitle: true,
@@ -216,7 +216,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  _body() {
+  _bodyPlanes() {
     return StreamBuilder<List<int>>(
       stream: stream,
       builder: (context, snapshot) {
@@ -276,8 +276,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               : DefaultTabController(
                   length: 3,
                   child: Scaffold(
-                    appBar: _appBar(),
-                    body: _body(),
+                    appBar: _appBarPlanes(),
+                    body: _bodyPlanes(),
                   ),
                 ),
         ),
