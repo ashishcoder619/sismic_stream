@@ -46,9 +46,18 @@ class XYFrequency extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "$hz",
-              style: TextStyle(fontFamily: 'Quebec Black', fontSize: 40.0),
+            Container(
+              width: 50,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "$hz",
+                  style: TextStyle(
+                    fontFamily: 'Quebec Black',
+                    fontSize: 40.0,
+                  ),
+                ),
+              ),
             ),
             Text(
               "Hz",

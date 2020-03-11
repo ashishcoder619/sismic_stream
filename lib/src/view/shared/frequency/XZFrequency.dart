@@ -46,16 +46,26 @@ class XZFrequency extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "$hz",
-              style: TextStyle(fontFamily: 'Quebec Black', fontSize: 40.0),
+            Container(
+              width: 50,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "$hz",
+                  style: TextStyle(
+                    fontFamily: 'Quebec Black',
+                    fontSize: 40.0,
+                  ),
+                ),
+              ),
             ),
             Text(
               "Hz",
               style: TextStyle(
-                  color: Colors.lightBlue,
-                  fontFamily: 'Quebec Black',
-                  fontSize: 40.0),
+                color: Colors.lightBlue,
+                fontFamily: 'Quebec Black',
+                fontSize: 40.0,
+              ),
             ),
           ],
         ),

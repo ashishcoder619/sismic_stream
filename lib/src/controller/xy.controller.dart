@@ -5,15 +5,15 @@ class XYController = _XYControllerBase with _$XYController;
 
 abstract class _XYControllerBase with Store {
   @observable
-  int x;
+  int x = 0;
   @observable
-  int y;
+  int y = 0;
   @observable
-  double g;
+  double g = 0;
   @observable
-  int hzXY;
+  int hzXY = 0;
   @observable
-  int hzMaxXY;
+  int hzMaxXY = 0;
   @observable
   int hzMinXY;
   int _contHz = 0;

@@ -15,7 +15,7 @@ class XZPosition extends StatelessWidget {
       alignment: Alignment(0, 0),
       children: <Widget>[
         Image(
-          image: AssetImage('assets/images/TOP.png'),
+          image: AssetImage('assets/images/FRONT.png'),
         ),
         Stack(
           alignment: Alignment(0, 0),

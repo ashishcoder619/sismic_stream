@@ -135,8 +135,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     return stringData.split('|').map((e) => num.parse(e)).toList();
   }
 
-    // View Functions //
-  _viewXY() {
+  // View Functions //
+  Widget _viewXY() {
     return Column(
       children: <Widget>[
         Flexible(
@@ -163,7 +163,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  _viewXZ() {
+  Widget _viewXZ() {
     return Column(
       children: <Widget>[
         Flexible(
@@ -181,7 +181,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           child: Center(
             child: XZFrequency(
               hzMax: _controllerXZ.hzMaxXZ,
-              hz: _controllerXZ.hzMaxXZ,
+              hz: _controllerXZ.hzXZ,
               hzMin: _controllerXZ.hzMinXZ,
             ),
           ),
@@ -190,7 +190,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  _viewZY() {
+  Widget _viewZY() {
     return Column(
       children: <Widget>[
         Flexible(
@@ -217,7 +217,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  _appBar() {
+  Widget _appBar() {
     return AppBar(
       backgroundColor: Colors.white,
       centerTitle: true,
@@ -246,12 +246,14 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  _body() {
+  Widget _body() {
     return StreamBuilder<List<int>>(
       stream: stream,
+      initialData: [],
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
+          // return CircularProgressIndicator();
         }
         if (snapshot?.connectionState == ConnectionState.active) {
           List<num> arrData = _listParser(snapshot.data);
@@ -281,7 +283,9 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             ],
           );
         }
-        return Container();
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
@@ -294,14 +298,20 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
         body: Container(
           child: !isReady
               ? Center(
-                  child: Text(
-                    'SISMIC',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Quebec Black',
-                      fontSize: 26,
-                    ),
+                  child: Image(
+                    height: 150,
+                    width: 150,
+                    image: AssetImage('assets/images/SBAGUIA.png'),
                   ),
+
+                  // child: Text(
+                  //   'SISMIC',
+                  //   style: TextStyle(
+                  //     color: Colors.black,
+                  //     fontFamily: 'Quebec Black',
+                  //     fontSize: 26,
+                  //   ),
+                  // ),
                 )
               : DefaultTabController(
                   length: 3,

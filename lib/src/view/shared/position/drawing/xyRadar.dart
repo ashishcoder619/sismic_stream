@@ -78,25 +78,25 @@ class XYRadar extends CustomPainter {
     // fourth quadrant
     num a1 = quadrant["fourth"] || quadrant["third"] ? -yValue : 13;
     num a2 = quadrant["fourth"] ? -yValue / cos(22.5 * 0.0174533) : 13;
-    num a3 = quadrant["fourth"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
+    num a3 = quadrant["fourth"] ? sqrt((xValue * xValue)+(yValue*yValue)): 13;
     num a4 = quadrant["fourth"] ? xValue / cos(22.5 * 0.0174533) : 13;
 
     // first quadrant
     num a5 = quadrant["first"] || quadrant["fourth"] ? xValue : 13;                                                                                         
     num a6 = quadrant["first"] ? yValue / cos(22.5 * 0.0174533) : 13;                                                                                                                                                               
-    num a7 = quadrant["first"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;                                                                                                                                                               
+    num a7 = quadrant["first"] ? sqrt((xValue * xValue)+(yValue*yValue)): 13;                                                                                                                                                               
     num a8 = quadrant["first"] ? xValue / cos(22.5 * 0.0174533) : 13;                                                                                         
     
     // second quadrant
     num a9 = quadrant["second"] || quadrant["first"] ? yValue : 13;
     num a10 = quadrant["second"] ? yValue / cos(22.5 * 0.0174533) : 13;
-    num a11 = quadrant["second"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
+    num a11 = quadrant["second"] ? sqrt((xValue * xValue)+(yValue*yValue)): 13;
     num a12 = quadrant["second"] ? -xValue / cos(22.5 * 0.0174533) : 13;
     
     // third quadrant
     num a13 = quadrant["third"] || quadrant["second"] ? -xValue : 13;
     num a14 = quadrant["third"] ? -xValue / cos(22.5 * 0.0174533) : 13;
-    num a15 = quadrant["third"] ? sqrt((xValue * xValue)+(yValue*yValue)) : 13;
+    num a15 = quadrant["third"] ? sqrt((xValue * xValue)+(yValue*yValue)): 13;
     num a16 = quadrant["third"] ? -yValue / cos(22.5 * 0.0174533)  : 13;
 
     // MaterialColor graphColorSatate = quadrant >= 20 ? Colors.red : Colors.green;

@@ -28,7 +28,6 @@ class FindDevicesScreen extends StatelessWidget {
                 builder: (c, snapshot) => Column(
                   children: snapshot.data
                       .map((d) => ListTile(
-                                //ONLY SISMIC APPEARS
                                 title: Text(d.name),
                                 subtitle: Text(d.id.toString()),
                                 trailing: StreamBuilder<BluetoothDeviceState>(
@@ -36,6 +35,7 @@ class FindDevicesScreen extends StatelessWidget {
                                   initialData:
                                       BluetoothDeviceState.disconnected,
                                   builder: (c, snapshot) {
+                                    if(snapshot.error) CircularProgressIndicator();
                                     if (snapshot.data ==
                                         BluetoothDeviceState.connected) {
                                       return RaisedButton(
