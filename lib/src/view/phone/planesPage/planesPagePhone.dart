@@ -83,7 +83,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             (characteristic) {
               if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
                 characteristic.setNotifyValue(!characteristic.isNotifying);
-                stream = characteristic.value.asBroadcastStream();
+                // stream = characteristic.value.asBroadcastStream();
+                stream = characteristic.value;
                 if (mounted) {
                   setState(
                     () {
@@ -246,18 +247,18 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  Widget _body() {
+  Widget _body(c) {
     return StreamBuilder<List<int>>(
       stream: stream,
       initialData: [],
-      builder: (context, snapshot) {
+      builder: (c, AsyncSnapshot<List<int>> snapshot) {
+        print("*******************************this is the data: ${snapshot.data}************************");
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
-          // return CircularProgressIndicator();
-        }
-        if (snapshot?.connectionState == ConnectionState.active) {
-          List<num> arrData = _listParser(snapshot.data);
+        }else
+        if (snapshot.connectionState == ConnectionState.active && snapshot.data.isEmpty == false) {
           // XY PLANE
+          List<num> arrData = _listParser(snapshot.data);
           _controllerXY.changeX(arrData[0]);
           _controllerXY.changeY(arrData[1]);
           _controllerXY.changeG(arrData[3]);
@@ -282,10 +283,11 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               _viewZY(),
             ],
           );
+        }else{
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
-        return Center(
-          child: CircularProgressIndicator(),
-        );
       },
     );
   }
@@ -317,7 +319,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                   length: 3,
                   child: Scaffold(
                     appBar: _appBar(),
-                    body: _body(),
+                    body: _body(context),
                   ),
                 ),
         ),
