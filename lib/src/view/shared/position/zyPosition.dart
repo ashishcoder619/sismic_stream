@@ -71,7 +71,7 @@ class Marker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("z: $z, y: $y");
+    // print("z: $z, y: $y");
     return Transform(
       transform: Matrix4.translationValues(z.toDouble(), y.toDouble(), 0.0),
       // child: CircleAvatar(radius: 100, backgroundColor: Colors.lightGreen,));

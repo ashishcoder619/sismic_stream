@@ -252,42 +252,94 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       stream: stream,
       initialData: [],
       builder: (c, AsyncSnapshot<List<int>> snapshot) {
-        print("*******************************this is the data: ${snapshot.data}************************");
+        print("CONNECTION STATE: ${snapshot.connectionState}");
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
-        }else
-        if (snapshot.connectionState == ConnectionState.active && snapshot.data.isEmpty == false) {
-          // XY PLANE
-          List<num> arrData = _listParser(snapshot.data);
-          _controllerXY.changeX(arrData[0]);
-          _controllerXY.changeY(arrData[1]);
-          _controllerXY.changeG(arrData[3]);
-          _controllerXY.changeHzXY(arrData[4]);
-          _controllerXY.verifyHzXY(arrData[4]);
-          // XZ PLANE
-          _controllerXZ.changeX(arrData[0]);
-          _controllerXZ.changeZ(arrData[1]);
-          _controllerXZ.changeG(arrData[3]);
-          _controllerXZ.changeHzXZ(arrData[4]);
-          _controllerXZ.verifyHzXZ(arrData[4]);
-          // ZYPLANE
-          _controllerZY.changeZ(arrData[0]);
-          _controllerZY.changeY(arrData[1]);
-          _controllerZY.changeG(arrData[3]);
-          _controllerZY.changeHzZY(arrData[4]);
-          _controllerZY.verifyHzZY(arrData[4]);
-          return TabBarView(
-            children: <Widget>[
-              _viewXY(),
-              _viewXZ(),
-              _viewZY(),
-            ],
-          );
-        }else{
+        }
+        if (snapshot.data.isEmpty == false) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.active:
+              // XY PLANE
+              List<num> arrData = _listParser(snapshot.data);
+              _controllerXY.changeX(arrData[0]);
+              _controllerXY.changeY(arrData[1]);
+              _controllerXY.changeG(arrData[3]);
+              _controllerXY.changeHzXY(arrData[4]);
+              _controllerXY.verifyHzXY(arrData[4]);
+              // XZ PLANE
+              _controllerXZ.changeX(arrData[0]);
+              _controllerXZ.changeZ(arrData[1]);
+              _controllerXZ.changeG(arrData[3]);
+              _controllerXZ.changeHzXZ(arrData[4]);
+              _controllerXZ.verifyHzXZ(arrData[4]);
+              // ZYPLANE
+              _controllerZY.changeZ(arrData[0]);
+              _controllerZY.changeY(arrData[1]);
+              _controllerZY.changeG(arrData[3]);
+              _controllerZY.changeHzZY(arrData[4]);
+              _controllerZY.verifyHzZY(arrData[4]);
+              return TabBarView(
+                children: <Widget>[
+                  _viewXY(),
+                  _viewXZ(),
+                  _viewZY(),
+                ],
+              );
+              break;
+            case ConnectionState.none:
+              return Container(
+                child: Center(
+                  child: Text("bluetooth disconected"),
+                ),
+              );
+              break;
+            default:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+        }else {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
+        // print(
+        //     "*******************************this is the data: ${snapshot.data}************************");
+        // if (snapshot.hasError) {
+        //   return Text('Error: ${snapshot.error}');
+        // } else if (snapshot.connectionState == ConnectionState.active &&
+        //     snapshot.data.isEmpty == false) {
+        //   // XY PLANE
+        //   List<num> arrData = _listParser(snapshot.data);
+        //   _controllerXY.changeX(arrData[0]);
+        //   _controllerXY.changeY(arrData[1]);
+        //   _controllerXY.changeG(arrData[3]);
+        //   _controllerXY.changeHzXY(arrData[4]);
+        //   _controllerXY.verifyHzXY(arrData[4]);
+        //   // XZ PLANE
+        //   _controllerXZ.changeX(arrData[0]);
+        //   _controllerXZ.changeZ(arrData[1]);
+        //   _controllerXZ.changeG(arrData[3]);
+        //   _controllerXZ.changeHzXZ(arrData[4]);
+        //   _controllerXZ.verifyHzXZ(arrData[4]);
+        //   // ZYPLANE
+        //   _controllerZY.changeZ(arrData[0]);
+        //   _controllerZY.changeY(arrData[1]);
+        //   _controllerZY.changeG(arrData[3]);
+        //   _controllerZY.changeHzZY(arrData[4]);
+        //   _controllerZY.verifyHzZY(arrData[4]);
+        //   return TabBarView(
+        //     children: <Widget>[
+        //       _viewXY(),
+        //       _viewXZ(),
+        //       _viewZY(),
+        //     ],
+        //   );
+        // } else {
+        //   return Center(
+        //     child: CircularProgressIndicator(),
+        //   );
+        // }
       },
     );
   }

@@ -11,7 +11,7 @@ class XYPosition extends StatelessWidget {
   XYPosition({this.xValue, this.yValue, this.gValue});
 
   Widget _position(int xValue, int yValue, double gValue) {
-    print("*********************x: $xValue y: $yValue************************");
+    // print("*********************x: $xValue y: $yValue************************");
     return Stack(
       alignment: Alignment(0, 0),
       children: <Widget>[
