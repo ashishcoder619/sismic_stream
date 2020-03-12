@@ -83,7 +83,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             (characteristic) {
               if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
                 characteristic.setNotifyValue(!characteristic.isNotifying);
-                // stream = characteristic.value.asBroadcastStream();
                 stream = characteristic.value;
                 if (mounted) {
                   setState(
@@ -99,6 +98,10 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       },
     );
     if (!isReady) {
+      setState(() {
+        isReady = false;
+      });
+      print("disconnected");
       _Pop();
     }
   }
@@ -252,7 +255,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       stream: stream,
       initialData: [],
       builder: (c, AsyncSnapshot<List<int>> snapshot) {
-        print("CONNECTION STATE: ${snapshot.connectionState}");
+        // print("CONNECTION STATE: ${snapshot.connectionState}");
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         }

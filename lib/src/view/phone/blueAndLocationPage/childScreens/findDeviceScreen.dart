@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import '../../planesPage/planesPagePhone.dart';
 import '../bluetoothWidgets.dart';
-// import 'deviceScreen.dart';
 
 class FindDevicesScreen extends StatelessWidget {
   @override
@@ -16,67 +15,15 @@ class FindDevicesScreen extends StatelessWidget {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: () =>
-            FlutterBlue.instance.startScan(timeout: Duration(seconds: 4)),
+        onRefresh: () => FlutterBlue.instance.startScan(
+          timeout: Duration(seconds: 4),
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              // StreamBuilder<List<BluetoothDevice>>(
-              //   stream: Stream.periodic(Duration(seconds: 4))
-              //       .asyncMap((_) => FlutterBlue.instance.connectedDevices),
-              //   initialData: [],
-              //   builder: (c, snapshot) => Column(
-              //     children: snapshot.data
-              //         .map((d) => ListTile(
-              //                   title: Text(d.name),
-              //                   subtitle: Text(d.id.toString()),
-              //                   trailing: StreamBuilder<BluetoothDeviceState>(
-              //                     stream: d.state,
-              //                     initialData:
-              //                         BluetoothDeviceState.disconnected,
-              //                     builder: (c, snapshot) {
-              //                       if(snapshot.error) CircularProgressIndicator();
-              //                       if (snapshot.data ==
-              //                           BluetoothDeviceState.connected) {
-              //                         return RaisedButton(
-              //                           child: Text('OPEN'),
-              //                           onPressed: () =>
-              //                               Navigator.of(context).push(
-              //                             MaterialPageRoute(
-              //                                 builder: (context) =>
-              //                                     DeviceScreen(device: d)),
-              //                           ),
-              //                         );
-              //                       }
-              //                       return null; //Text(snapshot.data.toString());
-              //                     },
-              //                   ),
-              //                 )
-              //             // : Text(''),
-              //             )
-              //         .toList(),
-              //   ),
-              // ),
               StreamBuilder<List<ScanResult>>(
                 stream: FlutterBlue.instance.scanResults,
                 initialData: [],
-                // builder: (c, snapshot) => Column(
-                //   children: snapshot.data
-                //       .map(
-                //         (r) => ScanResultTile(
-                //           result: r,
-                //           onTap: () => Navigator.of(context).push(
-                //             MaterialPageRoute(
-                //               builder: (context) {
-                //                 r.device.connect();
-                //                 return PlanesPagePhone(device: r.device);
-                //               },
-                //             ),
-                //           ),
-                //         )
-                //       )
-                //       .toList(),
-                // ),
                 builder: (c, snapshot) {
                   List<ScanResult> SISMIC_DEVICE = snapshot.data
                       .where((e) => e.device.name == "ESP32_SISMIC")
