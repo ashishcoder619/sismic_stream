@@ -43,6 +43,23 @@ mixin _$XYController on _XYControllerBase, Store {
     }, _$yAtom, name: '${_$yAtom.name}_set');
   }
 
+  final _$pointsAtom = Atom(name: '_XYControllerBase.points');
+
+  @override
+  List<List<dynamic>> get points {
+    _$pointsAtom.context.enforceReadPolicy(_$pointsAtom);
+    _$pointsAtom.reportObserved();
+    return super.points;
+  }
+
+  @override
+  set points(List<List<dynamic>> value) {
+    _$pointsAtom.context.conditionallyRunInAction(() {
+      super.points = value;
+      _$pointsAtom.reportChanged();
+    }, _$pointsAtom, name: '${_$pointsAtom.name}_set');
+  }
+
   final _$gAtom = Atom(name: '_XYControllerBase.g');
 
   @override
@@ -111,8 +128,35 @@ mixin _$XYController on _XYControllerBase, Store {
     }, _$hzMinXYAtom, name: '${_$hzMinXYAtom.name}_set');
   }
 
+  final _$_contHzAtom = Atom(name: '_XYControllerBase._contHz');
+
+  @override
+  int get _contHz {
+    _$_contHzAtom.context.enforceReadPolicy(_$_contHzAtom);
+    _$_contHzAtom.reportObserved();
+    return super._contHz;
+  }
+
+  @override
+  set _contHz(int value) {
+    _$_contHzAtom.context.conditionallyRunInAction(() {
+      super._contHz = value;
+      _$_contHzAtom.reportChanged();
+    }, _$_contHzAtom, name: '${_$_contHzAtom.name}_set');
+  }
+
   final _$_XYControllerBaseActionController =
       ActionController(name: '_XYControllerBase');
+
+  @override
+  dynamic changePoints(int newX, int newY) {
+    final _$actionInfo = _$_XYControllerBaseActionController.startAction();
+    try {
+      return super.changePoints(newX, newY);
+    } finally {
+      _$_XYControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeX(int newX) {
@@ -187,7 +231,7 @@ mixin _$XYController on _XYControllerBase, Store {
   @override
   String toString() {
     final string =
-        'x: ${x.toString()},y: ${y.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()}';
+        'x: ${x.toString()},y: ${y.toString()},points: ${points.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()}';
     return '{$string}';
   }
 }

@@ -150,6 +150,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               xValue: _controllerXY.x,
               yValue: _controllerXY.y,
               gValue: _controllerXY.g,
+              points: _controllerXY.points,
             ),
           ),
         ),
@@ -269,6 +270,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               _controllerXY.changeG(arrData[3]);
               _controllerXY.changeHzXY(arrData[4]);
               _controllerXY.verifyHzXY(arrData[4]);
+              _controllerXY.changePoints(arrData[0], arrData[1]);
               // XZ PLANE
               _controllerXZ.changeX(arrData[0]);
               _controllerXZ.changeZ(arrData[1]);
