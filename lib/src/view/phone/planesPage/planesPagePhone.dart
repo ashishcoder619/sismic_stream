@@ -30,9 +30,9 @@ class PlanesPagePhone extends StatefulWidget {
 class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   final String SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
   final String CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
-  final XYController _controllerXY = XYController();
-  final XZController _controllerXZ = XZController();
-  final ZYController _controllerZY = ZYController();
+  final _controllerXY = XYController();
+  final _controllerXZ = XZController();
+  final _controllerZY = ZYController();
   Stream<List<int>> stream;
   bool isReady;
 
@@ -308,43 +308,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             child: CircularProgressIndicator(),
           );
         }
-        // print(
-        //     "*******************************this is the data: ${snapshot.data}************************");
-        // if (snapshot.hasError) {
-        //   return Text('Error: ${snapshot.error}');
-        // } else if (snapshot.connectionState == ConnectionState.active &&
-        //     snapshot.data.isEmpty == false) {
-        //   // XY PLANE
-        //   List<num> arrData = _listParser(snapshot.data);
-        //   _controllerXY.changeX(arrData[0]);
-        //   _controllerXY.changeY(arrData[1]);
-        //   _controllerXY.changeG(arrData[3]);
-        //   _controllerXY.changeHzXY(arrData[4]);
-        //   _controllerXY.verifyHzXY(arrData[4]);
-        //   // XZ PLANE
-        //   _controllerXZ.changeX(arrData[0]);
-        //   _controllerXZ.changeZ(arrData[1]);
-        //   _controllerXZ.changeG(arrData[3]);
-        //   _controllerXZ.changeHzXZ(arrData[4]);
-        //   _controllerXZ.verifyHzXZ(arrData[4]);
-        //   // ZYPLANE
-        //   _controllerZY.changeZ(arrData[0]);
-        //   _controllerZY.changeY(arrData[1]);
-        //   _controllerZY.changeG(arrData[3]);
-        //   _controllerZY.changeHzZY(arrData[4]);
-        //   _controllerZY.verifyHzZY(arrData[4]);
-        //   return TabBarView(
-        //     children: <Widget>[
-        //       _viewXY(),
-        //       _viewXZ(),
-        //       _viewZY(),
-        //     ],
-        //   );
-        // } else {
-        //   return Center(
-        //     child: CircularProgressIndicator(),
-        //   );
-        // }
       },
     );
   }
@@ -362,15 +325,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                     width: 150,
                     image: AssetImage('assets/images/SBAGUIA.png'),
                   ),
-
-                  // child: Text(
-                  //   'SISMIC',
-                  //   style: TextStyle(
-                  //     color: Colors.black,
-                  //     fontFamily: 'Quebec Black',
-                  //     fontSize: 26,
-                  //   ),
-                  // ),
                 )
               : DefaultTabController(
                   length: 3,

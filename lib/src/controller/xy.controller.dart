@@ -11,7 +11,10 @@ abstract class _XYControllerBase with Store {
   @observable
   int y = 0;
   @observable
-  List<List> points = [];
+  List<List<int>> points = [];
+  @observable
+  List<List<int>> safetyPoints = [];
+
 
   @observable
   double g = 0;
@@ -27,18 +30,17 @@ abstract class _XYControllerBase with Store {
 
   @action
   changePoints(int newX, int newY) {
-    if (cont < 16 && firstPoints) {
+    if (cont <= 20 && firstPoints) {
       points.add([newX, newY]);
-      if (cont == 15) {
+      cont++;
+      if (cont == 20) {
         cont = 0;
         firstPoints = false;
-      }else{
-        cont++;
       }
     } else {
       points[cont] = [newX, newY];
       cont++;
-      if (cont == 15) cont = 0;
+      if (cont == 20) cont = 0;
     }
   }
 

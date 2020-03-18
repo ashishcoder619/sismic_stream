@@ -46,18 +46,35 @@ mixin _$XYController on _XYControllerBase, Store {
   final _$pointsAtom = Atom(name: '_XYControllerBase.points');
 
   @override
-  List<List<dynamic>> get points {
+  List<List<int>> get points {
     _$pointsAtom.context.enforceReadPolicy(_$pointsAtom);
     _$pointsAtom.reportObserved();
     return super.points;
   }
 
   @override
-  set points(List<List<dynamic>> value) {
+  set points(List<List<int>> value) {
     _$pointsAtom.context.conditionallyRunInAction(() {
       super.points = value;
       _$pointsAtom.reportChanged();
     }, _$pointsAtom, name: '${_$pointsAtom.name}_set');
+  }
+
+  final _$safetyPointsAtom = Atom(name: '_XYControllerBase.safetyPoints');
+
+  @override
+  List<List<int>> get safetyPoints {
+    _$safetyPointsAtom.context.enforceReadPolicy(_$safetyPointsAtom);
+    _$safetyPointsAtom.reportObserved();
+    return super.safetyPoints;
+  }
+
+  @override
+  set safetyPoints(List<List<int>> value) {
+    _$safetyPointsAtom.context.conditionallyRunInAction(() {
+      super.safetyPoints = value;
+      _$safetyPointsAtom.reportChanged();
+    }, _$safetyPointsAtom, name: '${_$safetyPointsAtom.name}_set');
   }
 
   final _$gAtom = Atom(name: '_XYControllerBase.g');
@@ -231,7 +248,7 @@ mixin _$XYController on _XYControllerBase, Store {
   @override
   String toString() {
     final string =
-        'x: ${x.toString()},y: ${y.toString()},points: ${points.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()}';
+        'x: ${x.toString()},y: ${y.toString()},points: ${points.toString()},safetyPoints: ${safetyPoints.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()}';
     return '{$string}';
   }
 }
