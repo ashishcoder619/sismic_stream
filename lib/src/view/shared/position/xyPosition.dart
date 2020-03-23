@@ -28,20 +28,19 @@ class XYPosition extends StatelessWidget {
         Stack(
           alignment: Alignment(0, 0),
           children: <Widget>[
-            Stack(
-              alignment: Alignment(0, 0),
-              children: points
-                  .map(
-                    (point) => Marker(
-                      index: points.indexOf(point),
-                      x: point[0],
-                      y: point[1],
-                    ),
-                  )
-                  .toList(),
-            ),
+            // Stack(
+            //   alignment: Alignment(0, 0),
+            //   children: points
+            //       .map(
+            //         (point) => Marker(
+            //           index: points.indexOf(point),
+            //           x: point[0],
+            //           y: point[1],
+            //         ),
+            //       )
+            //       .toList(),
+            // ),
             CustomPaint(
-              // child: Center(),
               painter: RoundPolygonPainter(points: points),
             ),
           ],

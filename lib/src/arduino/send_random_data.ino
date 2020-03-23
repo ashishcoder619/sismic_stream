@@ -34,7 +34,8 @@ const int vout = 36;                                            //analog input
 /*
 variable
 */
-int x, y, z, g, hz; 
+int x, y, z, g, hz;
+
 
 void setup(void)
 {
@@ -79,8 +80,10 @@ void setup(void)
   Serial.println("Waiting a client connection to notify...");
 }
 
-void loop(void)
-{
+ 
+int contQuad = 1;
+void loop(void){  
+  
   /*
   get adcvalue
   */
@@ -88,8 +91,109 @@ void loop(void)
   delayMicroseconds(280);
   digitalWrite(iled, LOW);
   
-  x = random(10,20);
-  y = random(10,20);
+  switch (contQuad){
+    case 1:
+        x = random(-5,5);
+        y = random(45,55);
+        contQuad++;
+        break;
+    case 2:
+        x = random(5,15);
+        y = random(35,45);
+        contQuad++;
+        break;
+    case 3:
+        x = random(15,25);
+        y = random(25,35);
+        contQuad++;
+        break;
+    case 4:
+        x = random(25,35);
+        y = random(15,25);
+        contQuad++;
+        break;
+    case 5:
+        x = random(35,45);
+        y = random(5,15);
+        contQuad++;
+        break;
+    case 6:
+        x = random(45,55);
+        y = random(-5,5);
+        contQuad++;
+        break;
+    case 7:
+        x = random(35,45);
+        y = -random(5,15);
+        contQuad++;
+        break;
+    case 8:
+        x = random(25,35);
+        y = -random(15,25);
+        contQuad++;
+        break;
+    case 9:
+        x = random(15,25);
+        y = -random(25,35);
+        contQuad++;
+        break;
+    case 10:
+        x = random(5,15);
+        y = -random(35,45);
+        contQuad++;
+        break;
+    case 11:
+        x = random(-5,5);
+        y = -random(45,55);
+        contQuad++;
+        break;
+    case 12:
+        x = -random(5,15);
+        y = -random(35,45);
+        contQuad++;
+        break;
+    case 13:
+        x = -random(15,25);
+        y = -random(25,35);
+        contQuad++;
+        break;
+    case 14:
+        x = -random(25,35);
+        y = -random(15,25);
+        contQuad++;
+        break;
+    case 15:
+        x = -random(35,45);
+        y = -random(5,15);
+        contQuad++;
+        break;
+    case 16:
+        x = -random(45,55);
+        y = random(-5,5);
+        contQuad++;
+        break;
+    case 17:
+        x = -random(35,45);
+        y = random(5,15);
+        contQuad++;
+        break;
+    case 18:
+        x = -random(25,35);
+        y = random(15,25);
+        contQuad++;
+        break;
+    case 19:
+        x = -random(15,25);
+        y = random(25,35);
+        contQuad++;
+        break;
+    case 20:
+        x = -random(5,15);
+        y = random(35,45);
+        contQuad = 1;
+        break;
+  };
+  
   z = random(10,20);
   g =random(0,9);
   hz = random(5,15);
@@ -150,5 +254,5 @@ void loop(void)
         oldDeviceConnected = deviceConnected;
     }
   
-  delay(250);
+  delay(800);
 }

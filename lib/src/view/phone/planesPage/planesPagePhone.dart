@@ -35,6 +35,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   final _controllerZY = ZYController();
   Stream<List<int>> stream;
   bool isReady;
+  double _range = 0;
 
   @override
   void initState() {
@@ -222,7 +223,13 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  Widget _appBar() {
+  onchanged(double newValue) {
+    setState(() {
+      _range = newValue;
+    });
+  }
+
+  Widget _appBar({BuildContext context}) {
     return AppBar(
       backgroundColor: Colors.white,
       centerTitle: true,
@@ -233,6 +240,40 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           fontSize: 26,
         ),
       ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () => showDialog(
+            context: context,
+            child: AlertDialog(
+              title: Text(
+                'Save data',
+                textAlign: TextAlign.center,
+              ),
+              content: Container(
+                height: 50,
+                child: Slider(
+                  min: 0,
+                  max: 100,
+                  value: _range,
+                  onChanged: onchanged
+                ),
+              ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FlatButton(
+                      onPressed: null,
+                      child: Text('Save Data'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
       bottom: TabBar(
         unselectedLabelColor: Colors.black,
         indicator: BoxDecoration(color: Colors.grey),
@@ -303,7 +344,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                 child: CircularProgressIndicator(),
               );
           }
-        }else {
+        } else {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -329,7 +370,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               : DefaultTabController(
                   length: 3,
                   child: Scaffold(
-                    appBar: _appBar(),
+                    appBar: _appBar(context: context),
                     body: _body(context),
                   ),
                 ),

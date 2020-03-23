@@ -331,18 +331,54 @@ class RoundPolygonPainter extends CustomPainter {
     var coord = points.map((point) => Offset(point[0].toDouble(), -point[1].toDouble())).toList();
     path.addPolygon(coord, true);
     
-    
+    var graphOutlinePaint = Paint()
+        ..color = Colors.red
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.0
+        ..isAntiAlias = true;
+
     Paint paint = Paint();
     paint.style = PaintingStyle.fill;
-    // paint.color = Color.fromRGBO(255, 0, 0, 1.0).withOpacity(0.6);
-    // canvas.drawPath(path, paint);
-    
-    
-    // paint.style = PaintingStyle.stroke;
+    paint.color = Colors.red.withOpacity(0.5);
     paint.strokeWidth = 1.0;
     paint.strokeJoin = StrokeJoin.round;
-    paint.color = Color.fromRGBO(150, 150, 150, 1.0).withOpacity(0.5);
+    canvas.drawPath(path, graphOutlinePaint);
     canvas.drawPath(path, paint);
+
+
+    Path staticPath = new Path();
+    var staticCoord = [
+      Offset(-150, 0),
+      Offset(-120, 60),
+      Offset(-90, 80),
+      Offset(-60, 91.6515138991168),
+      Offset(-30, 97.97958971132712),
+      Offset(0, 100),
+      Offset(30, 97.97958971132712),
+      Offset(60, 91.6515138991168),
+      Offset(90, 80),
+      Offset(120, 60),
+      Offset(150, 0),
+      Offset(120, -60),
+      Offset(90, -80),
+      Offset(60, -91.6515138991168),
+      Offset(30, -97.97958971132712),
+      Offset(0, -100),
+      Offset(-30, -97.97958971132712),
+      Offset(-60, -91.6515138991168),
+      Offset(-90, -80),
+      Offset(-120, -60),
+      Offset(-150, 0)
+    ];
+    staticPath.addPolygon(staticCoord, true);
+    
+    var outlinePaint = Paint()
+        ..color = Colors.black
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4.0
+        ..isAntiAlias = true;
+
+    canvas.drawPath(staticPath, outlinePaint);
   }
 
   @override
