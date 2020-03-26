@@ -306,8 +306,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             case ConnectionState.active:
               // XY PLANE
               List<num> arrData = _listParser(snapshot.data);
-              _controllerXY.changeX(arrData[0]);
-              _controllerXY.changeY(arrData[1]);
+              // _controllerXY.changeX(arrData[0]);
+              // _controllerXY.changeY(arrData[1]);
               _controllerXY.changeG(arrData[3]);
               _controllerXY.changeHzXY(arrData[4]);
               _controllerXY.verifyHzXY(arrData[4]);
