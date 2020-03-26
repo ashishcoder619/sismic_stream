@@ -29,16 +29,16 @@ abstract class _XYControllerBase with Store {
   int _contHz = 0;
 
   @action
-  changePoints(int newX, int newY) {
+  changePoints(int newX, int newY, int newZ) {
     if (cont <= 20 && firstPoints) {
-      points.add([newX, newY]);
+      points.add([newX, newY, newZ]);
       cont++;
       if (cont == 20) {
         cont = 0;
         firstPoints = false;
       }
     } else {
-      points[cont] = [newX, newY];
+      points[cont] = [newX, newY, newZ];
       cont++;
       if (cont == 20) cont = 0;
     }

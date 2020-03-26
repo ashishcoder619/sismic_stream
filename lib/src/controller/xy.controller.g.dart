@@ -166,10 +166,10 @@ mixin _$XYController on _XYControllerBase, Store {
       ActionController(name: '_XYControllerBase');
 
   @override
-  dynamic changePoints(int newX, int newY) {
+  dynamic changePoints(int newX, int newY, int newZ) {
     final _$actionInfo = _$_XYControllerBaseActionController.startAction();
     try {
-      return super.changePoints(newX, newY);
+      return super.changePoints(newX, newY, newZ);
     } finally {
       _$_XYControllerBaseActionController.endAction(_$actionInfo);
     }

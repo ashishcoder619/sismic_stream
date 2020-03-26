@@ -43,7 +43,7 @@ class XYPosition extends StatelessWidget {
             //       .toList(),
             // ),
             CustomPaint(
-              painter: RoundPolygonPainter(points: points),
+              painter: XYRadar(points: points),
             ),
           ],
         ),

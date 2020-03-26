@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 
-class RoundPolygonPainter extends CustomPainter {
+class XYRadar extends CustomPainter {
   List<List<int>> points;
-  RoundPolygonPainter({this.points});
+  XYRadar({this.points});
   @override
   void paint(Canvas canvas, Size size) {
     Path path = new Path();
@@ -15,7 +15,7 @@ class RoundPolygonPainter extends CustomPainter {
       ..color = Colors.red
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
-      ..isAntiAlias = true;
+      ..isAntiAlias = false;
 
     Paint paint = Paint();
     paint.style = PaintingStyle.fill;
