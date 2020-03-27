@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sismic_stream/src/view/shared/position/drawing/zyRadar.dart';
 import './drawing/circleMachine.dart';
-import 'drawing/zyLimit.dart';
 
 class ZYPosition extends StatelessWidget {
   final int zValue;
   final int yValue;
   final double gValue;
-  ZYPosition({this.zValue, this.yValue, this.gValue});
+  final List<List<int>> points;
+  ZYPosition({
+    this.zValue,
+    this.yValue,
+    this.gValue,
+    this.points,
+  });
   _position(int zValue, int yValue, double gValue) {
     return Stack(
       alignment: Alignment(0, 0),
@@ -21,10 +26,8 @@ class ZYPosition extends StatelessWidget {
           children: <Widget>[
             CustomPaint(
               painter: ZYRadar(
-                zValue: zValue,
-                yValue: yValue,
+                points: points,
               ),
-              child: Center(),
             ),
             // Marker(
             //   z: zValue,

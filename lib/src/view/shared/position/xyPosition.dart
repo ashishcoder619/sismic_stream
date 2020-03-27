@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'drawing/drawRoundAngle/size_const.dart';
 import 'drawing/xyRadar.dart';
 
 class XYPosition extends StatelessWidget {
@@ -53,14 +54,46 @@ class XYPosition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SizeUtil.getInstance(key: SizeKeyConst.DEVICE_KEY).logicSize = MediaQuery.of(context).size;
-    // SizeUtil.initDesignSize();
+    SizeUtil.getInstance().logicSize = MediaQuery.of(context).size;
+    SizeUtil.initDesignSize();
     return _position(
       xValue,
       yValue,
       gValue,
       // context
     );
+    // return Container(
+    //   width: 400,
+    //   height: 400,
+    //   child: Stack(
+    //     alignment: Alignment(0, 0),
+    //     children: <Widget>[
+    //       Image(
+    //         image: AssetImage('assets/images/TOP.png'),
+    //       ),
+    //       Stack(
+    //         alignment: Alignment(0, 0),
+    //         children: <Widget>[
+    //           // Stack(
+    //           //   alignment: Alignment(0, 0),
+    //           //   children: points
+    //           //       .map(
+    //           //         (point) => Marker(
+    //           //           index: points.indexOf(point),
+    //           //           x: point[0],
+    //           //           y: point[1],
+    //           //         ),
+    //           //       )
+    //           //       .toList(),
+    //           // ),
+    //           CustomPaint(
+    //             painter: RoundPolygonPainter(),
+    //           ),
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }
 

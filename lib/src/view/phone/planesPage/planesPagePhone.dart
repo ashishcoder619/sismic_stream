@@ -207,6 +207,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               zValue: _controllerZY.z,
               yValue: _controllerZY.y,
               gValue: _controllerZY.g,
+              points: _controllerXY.points,
             ),
           ),
         ),
