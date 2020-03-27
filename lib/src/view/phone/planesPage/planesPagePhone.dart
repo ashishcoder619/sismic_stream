@@ -35,6 +35,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   final _controllerZY = ZYController();
   Stream<List<int>> stream;
   bool isReady;
+  double _cont = 1;
   double _range = 0;
 
   @override
@@ -113,7 +114,11 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       builder: (context) =>
           AlertDialog(
             title: Text('Are you sure?'),
-            content: Text('Do you want to disconnect device and go back?'),
+            content: Container(
+              width: 500,
+              height: 200,
+              child: Text('Do you want to disconnect device and go back?'),
+            ),
             actions: <Widget>[
               FlatButton(
                   onPressed: () => Navigator.of(context).pop(false),
@@ -169,6 +174,12 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
+  contAngle(double angle) {
+    if (angle == 60) _cont = 1;
+    _cont++;
+    return angle;
+  }
+
   Widget _viewXZ() {
     return Column(
       children: <Widget>[
@@ -180,6 +191,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               zValue: _controllerXZ.z,
               gValue: _controllerXZ.g,
               points: _controllerXY.points,
+              angle: contAngle(_cont),
             ),
           ),
         ),
@@ -255,11 +267,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               content: Container(
                 height: 50,
                 child: Slider(
-                  min: 0,
-                  max: 100,
-                  value: _range,
-                  onChanged: onchanged
-                ),
+                    min: 0, max: 100, value: _range, onChanged: onchanged),
               ),
               actions: <Widget>[
                 Row(
