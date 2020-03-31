@@ -199,7 +199,7 @@ class ZYRadar extends CustomPainter {
       ..style = PaintingStyle.fill
       ..color = Colors.green[600].withOpacity(0.5)
       ..isAntiAlias = true;
-    List<Point> list1 = points.map((e) => Point(e[2].toDouble(), -e[1].toDouble())).toList();
+    List<Point> list1 = points.map((e) => Point(e[0].toDouble(), -e[1].toDouble())).toList();
     
     var graphOutlinePaint = Paint()
       ..color = Colors.green

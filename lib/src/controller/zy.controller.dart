@@ -4,10 +4,14 @@ part 'zy.controller.g.dart';
 class ZYController = _ZYControllerBase with _$ZYController;
 
 abstract class _ZYControllerBase with Store {
+  int cont = 0;
+  bool firstPoints = true;
   @observable
   int z;
   @observable
   int y;
+  @observable
+  List<List<int>> points = [];
   @observable
   double g;
   @observable
@@ -16,7 +20,29 @@ abstract class _ZYControllerBase with Store {
   int hzMaxZY;
   @observable
   int hzMinZY;
+
+  @observable 
+  int fakeRange = 0;
+  @observable
+  int realRange = 0;
+
   int _contHz = 0;
+
+  @action
+  changePoints(int newZ, int newY) {
+    if (cont <= 20 && firstPoints) {
+      points.add([newZ, newY]);
+      cont++;
+      if (cont == 20) {
+        cont = 0;
+        firstPoints = false;
+      }
+    } else {
+      points[cont] = [newZ, newY];
+      cont++;
+      if (cont == 20) cont = 0;
+    }
+  }
 
   @action
   changeZ(int newZ) => z = newZ;
@@ -43,4 +69,8 @@ abstract class _ZYControllerBase with Store {
         hzMinZY = newHz;
     }
   }
+  @action
+  changeFakeRange(int newRange) => fakeRange = newRange;
+  @action
+  changeRealRange() => realRange = fakeRange;
 }

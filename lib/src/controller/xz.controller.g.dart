@@ -43,6 +43,23 @@ mixin _$XZController on _XZControllerBase, Store {
     }, _$zAtom, name: '${_$zAtom.name}_set');
   }
 
+  final _$pointsAtom = Atom(name: '_XZControllerBase.points');
+
+  @override
+  List<List<int>> get points {
+    _$pointsAtom.context.enforceReadPolicy(_$pointsAtom);
+    _$pointsAtom.reportObserved();
+    return super.points;
+  }
+
+  @override
+  set points(List<List<int>> value) {
+    _$pointsAtom.context.conditionallyRunInAction(() {
+      super.points = value;
+      _$pointsAtom.reportChanged();
+    }, _$pointsAtom, name: '${_$pointsAtom.name}_set');
+  }
+
   final _$gAtom = Atom(name: '_XZControllerBase.g');
 
   @override
@@ -111,8 +128,52 @@ mixin _$XZController on _XZControllerBase, Store {
     }, _$hzMinXZAtom, name: '${_$hzMinXZAtom.name}_set');
   }
 
+  final _$fakeRangeAtom = Atom(name: '_XZControllerBase.fakeRange');
+
+  @override
+  int get fakeRange {
+    _$fakeRangeAtom.context.enforceReadPolicy(_$fakeRangeAtom);
+    _$fakeRangeAtom.reportObserved();
+    return super.fakeRange;
+  }
+
+  @override
+  set fakeRange(int value) {
+    _$fakeRangeAtom.context.conditionallyRunInAction(() {
+      super.fakeRange = value;
+      _$fakeRangeAtom.reportChanged();
+    }, _$fakeRangeAtom, name: '${_$fakeRangeAtom.name}_set');
+  }
+
+  final _$realRangeAtom = Atom(name: '_XZControllerBase.realRange');
+
+  @override
+  int get realRange {
+    _$realRangeAtom.context.enforceReadPolicy(_$realRangeAtom);
+    _$realRangeAtom.reportObserved();
+    return super.realRange;
+  }
+
+  @override
+  set realRange(int value) {
+    _$realRangeAtom.context.conditionallyRunInAction(() {
+      super.realRange = value;
+      _$realRangeAtom.reportChanged();
+    }, _$realRangeAtom, name: '${_$realRangeAtom.name}_set');
+  }
+
   final _$_XZControllerBaseActionController =
       ActionController(name: '_XZControllerBase');
+
+  @override
+  dynamic changePoints(int newX, int newZ) {
+    final _$actionInfo = _$_XZControllerBaseActionController.startAction();
+    try {
+      return super.changePoints(newX, newZ);
+    } finally {
+      _$_XZControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeX(int newX) {
@@ -185,9 +246,29 @@ mixin _$XZController on _XZControllerBase, Store {
   }
 
   @override
+  dynamic changeFakeRange(int newRange) {
+    final _$actionInfo = _$_XZControllerBaseActionController.startAction();
+    try {
+      return super.changeFakeRange(newRange);
+    } finally {
+      _$_XZControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeRealRange() {
+    final _$actionInfo = _$_XZControllerBaseActionController.startAction();
+    try {
+      return super.changeRealRange();
+    } finally {
+      _$_XZControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'x: ${x.toString()},z: ${z.toString()},g: ${g.toString()},hzXZ: ${hzXZ.toString()},hzMaxXZ: ${hzMaxXZ.toString()},hzMinXZ: ${hzMinXZ.toString()}';
+        'x: ${x.toString()},z: ${z.toString()},points: ${points.toString()},g: ${g.toString()},hzXZ: ${hzXZ.toString()},hzMaxXZ: ${hzMaxXZ.toString()},hzMinXZ: ${hzMinXZ.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
     return '{$string}';
   }
 }

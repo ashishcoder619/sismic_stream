@@ -82,3 +82,38 @@ class XYRadar extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+
+class XYRadarWithRange extends CustomPainter {
+  List<List<double>> pointsWithRange;
+  XYRadarWithRange({this.pointsWithRange});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (size.width > 1.0 && size.height > 1.0) {
+      _sizeUtil.logicSize = size;
+      print(">1.9");
+    }
+
+    List<Point> points = pointsWithRange.map((e) => Point(e[0].toDouble(), -e[1].toDouble())).toList();
+    
+    var graphOutlinePaint = Paint()
+      ..color = Colors.blue[300]
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0
+      ..isAntiAlias = false;
+    _drawWithPoint(canvas, graphOutlinePaint, points);
+    canvas.save();
+    canvas.restore();
+  }
+
+  void _drawWithPoint(canvas, paint, list, {hasShadow = false}) {
+    var path = PolygonUtil.drawRoundPolygon(list, canvas, paint, distance: 2.0);
+    if (hasShadow) {
+      canvas.drawShadow(path, Colors.black26, 10.0, true);
+    }
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}

@@ -8,11 +8,13 @@ class XYPosition extends StatelessWidget {
   final int yValue;
   final double gValue;
   final List<List> points;
+  final List<List> pointsWithRange;
   XYPosition({
     this.xValue,
     this.yValue,
     this.gValue,
     this.points,
+    this.pointsWithRange,
   });
 
   Widget _position(
@@ -45,6 +47,11 @@ class XYPosition extends StatelessWidget {
             CustomPaint(
               painter: XYRadar(points: points),
             ),
+            pointsWithRange.length != 0
+                ? CustomPaint(
+                    painter: XYRadarWithRange(pointsWithRange: pointsWithRange),
+                  )
+                : Container(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

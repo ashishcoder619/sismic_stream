@@ -58,7 +58,7 @@ class XZRadar extends CustomPainter {
       ..color = Colors.green[600].withOpacity(0.5)
       ..isAntiAlias = true;
     List<Point> list1 =
-        points.map((e) => Point(e[0].toDouble(), -e[2].toDouble())).toList();
+        points.map((e) => Point(e[0].toDouble(), -e[1].toDouble())).toList();
 
     var graphOutlinePaint = Paint()
       ..color = Colors.green

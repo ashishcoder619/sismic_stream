@@ -43,6 +43,23 @@ mixin _$ZYController on _ZYControllerBase, Store {
     }, _$yAtom, name: '${_$yAtom.name}_set');
   }
 
+  final _$pointsAtom = Atom(name: '_ZYControllerBase.points');
+
+  @override
+  List<List<int>> get points {
+    _$pointsAtom.context.enforceReadPolicy(_$pointsAtom);
+    _$pointsAtom.reportObserved();
+    return super.points;
+  }
+
+  @override
+  set points(List<List<int>> value) {
+    _$pointsAtom.context.conditionallyRunInAction(() {
+      super.points = value;
+      _$pointsAtom.reportChanged();
+    }, _$pointsAtom, name: '${_$pointsAtom.name}_set');
+  }
+
   final _$gAtom = Atom(name: '_ZYControllerBase.g');
 
   @override
@@ -111,8 +128,52 @@ mixin _$ZYController on _ZYControllerBase, Store {
     }, _$hzMinZYAtom, name: '${_$hzMinZYAtom.name}_set');
   }
 
+  final _$fakeRangeAtom = Atom(name: '_ZYControllerBase.fakeRange');
+
+  @override
+  int get fakeRange {
+    _$fakeRangeAtom.context.enforceReadPolicy(_$fakeRangeAtom);
+    _$fakeRangeAtom.reportObserved();
+    return super.fakeRange;
+  }
+
+  @override
+  set fakeRange(int value) {
+    _$fakeRangeAtom.context.conditionallyRunInAction(() {
+      super.fakeRange = value;
+      _$fakeRangeAtom.reportChanged();
+    }, _$fakeRangeAtom, name: '${_$fakeRangeAtom.name}_set');
+  }
+
+  final _$realRangeAtom = Atom(name: '_ZYControllerBase.realRange');
+
+  @override
+  int get realRange {
+    _$realRangeAtom.context.enforceReadPolicy(_$realRangeAtom);
+    _$realRangeAtom.reportObserved();
+    return super.realRange;
+  }
+
+  @override
+  set realRange(int value) {
+    _$realRangeAtom.context.conditionallyRunInAction(() {
+      super.realRange = value;
+      _$realRangeAtom.reportChanged();
+    }, _$realRangeAtom, name: '${_$realRangeAtom.name}_set');
+  }
+
   final _$_ZYControllerBaseActionController =
       ActionController(name: '_ZYControllerBase');
+
+  @override
+  dynamic changePoints(int newZ, int newY) {
+    final _$actionInfo = _$_ZYControllerBaseActionController.startAction();
+    try {
+      return super.changePoints(newZ, newY);
+    } finally {
+      _$_ZYControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeZ(int newZ) {
@@ -185,9 +246,29 @@ mixin _$ZYController on _ZYControllerBase, Store {
   }
 
   @override
+  dynamic changeFakeRange(int newRange) {
+    final _$actionInfo = _$_ZYControllerBaseActionController.startAction();
+    try {
+      return super.changeFakeRange(newRange);
+    } finally {
+      _$_ZYControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeRealRange() {
+    final _$actionInfo = _$_ZYControllerBaseActionController.startAction();
+    try {
+      return super.changeRealRange();
+    } finally {
+      _$_ZYControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'z: ${z.toString()},y: ${y.toString()},g: ${g.toString()},hzZY: ${hzZY.toString()},hzMaxZY: ${hzMaxZY.toString()},hzMinZY: ${hzMinZY.toString()}';
+        'z: ${z.toString()},y: ${y.toString()},points: ${points.toString()},g: ${g.toString()},hzZY: ${hzZY.toString()},hzMaxZY: ${hzMaxZY.toString()},hzMinZY: ${hzMinZY.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
     return '{$string}';
   }
 }

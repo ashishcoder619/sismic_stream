@@ -60,21 +60,21 @@ mixin _$XYController on _XYControllerBase, Store {
     }, _$pointsAtom, name: '${_$pointsAtom.name}_set');
   }
 
-  final _$safetyPointsAtom = Atom(name: '_XYControllerBase.safetyPoints');
+  final _$pointsWithRangeAtom = Atom(name: '_XYControllerBase.pointsWithRange');
 
   @override
-  List<List<int>> get safetyPoints {
-    _$safetyPointsAtom.context.enforceReadPolicy(_$safetyPointsAtom);
-    _$safetyPointsAtom.reportObserved();
-    return super.safetyPoints;
+  List<List<double>> get pointsWithRange {
+    _$pointsWithRangeAtom.context.enforceReadPolicy(_$pointsWithRangeAtom);
+    _$pointsWithRangeAtom.reportObserved();
+    return super.pointsWithRange;
   }
 
   @override
-  set safetyPoints(List<List<int>> value) {
-    _$safetyPointsAtom.context.conditionallyRunInAction(() {
-      super.safetyPoints = value;
-      _$safetyPointsAtom.reportChanged();
-    }, _$safetyPointsAtom, name: '${_$safetyPointsAtom.name}_set');
+  set pointsWithRange(List<List<double>> value) {
+    _$pointsWithRangeAtom.context.conditionallyRunInAction(() {
+      super.pointsWithRange = value;
+      _$pointsWithRangeAtom.reportChanged();
+    }, _$pointsWithRangeAtom, name: '${_$pointsWithRangeAtom.name}_set');
   }
 
   final _$gAtom = Atom(name: '_XYControllerBase.g');
@@ -200,10 +200,20 @@ mixin _$XYController on _XYControllerBase, Store {
       ActionController(name: '_XYControllerBase');
 
   @override
-  dynamic changePoints(int newX, int newY, int newZ) {
+  dynamic addPointsWithRange(List<List<int>> points) {
     final _$actionInfo = _$_XYControllerBaseActionController.startAction();
     try {
-      return super.changePoints(newX, newY, newZ);
+      return super.addPointsWithRange(points);
+    } finally {
+      _$_XYControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changePoints(int newX, int newY) {
+    final _$actionInfo = _$_XYControllerBaseActionController.startAction();
+    try {
+      return super.changePoints(newX, newY);
     } finally {
       _$_XYControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -302,7 +312,7 @@ mixin _$XYController on _XYControllerBase, Store {
   @override
   String toString() {
     final string =
-        'x: ${x.toString()},y: ${y.toString()},points: ${points.toString()},safetyPoints: ${safetyPoints.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
+        'x: ${x.toString()},y: ${y.toString()},points: ${points.toString()},pointsWithRange: ${pointsWithRange.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
     return '{$string}';
   }
 }

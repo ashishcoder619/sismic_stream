@@ -38,7 +38,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   Stream<List<int>> stream;
   bool isReady;
   double _cont = 1;
-  int _rangeValue = 0;
 
   @override
   void initState() {
@@ -157,6 +156,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               yValue: _controllerXY.y,
               gValue: _controllerXY.g,
               points: _controllerXY.points,
+              pointsWithRange: _controllerXY.pointsWithRange,
             ),
           ),
         ),
@@ -190,7 +190,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               xValue: _controllerXZ.x,
               zValue: _controllerXZ.z,
               gValue: _controllerXZ.g,
-              points: _controllerXY.points,
+              points: _controllerXZ.points,
               angle: contAngle(_cont),
             ),
           ),
@@ -220,7 +220,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               zValue: _controllerZY.z,
               yValue: _controllerZY.y,
               gValue: _controllerZY.g,
-              points: _controllerXY.points,
+              points: _controllerZY.points,
               angle: contAngle(_cont),
             ),
           ),
@@ -258,18 +258,20 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             builder: (context) =>
                 AlertDialog(
                   title: Text(
-                    'Select amplitude(mm)',
+                    'Select amplitude\n(mm)\n${_controllerXY.realRange}',
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
                   ),
                   content: Observer(
                     builder: (_) {
                       return NumberPicker.integer(
                         initialValue: _controllerXY.fakeRange,
-                        minValue: 0,
-                        maxValue: 10,
+                        minValue: 10,
+                        maxValue: 100,
                         onChanged: (newValue) {
                           _controllerXY.changeFakeRange(newValue);
-                          _rangeValue = newValue;
                         },
                       );
                     },
@@ -280,6 +282,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                         FlatButton(
                           onPressed: () {
                             _controllerXY.changeRealRange();
+                            _controllerXY.addPointsWithRange(_controllerXY.points);
                             Navigator.pop(context);
                           },
                           child: Text('Save amplitude'),
@@ -290,7 +293,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                 ) ??
                 false,
           ),
-        )
+        ),
       ],
       bottom: TabBar(
         unselectedLabelColor: Colors.black,
@@ -329,19 +332,21 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               _controllerXY.changeG(arrData[3]);
               _controllerXY.changeHzXY(arrData[4]);
               _controllerXY.verifyHzXY(arrData[4]);
-              _controllerXY.changePoints(arrData[0], arrData[1], arrData[2]);
+              _controllerXY.changePoints(arrData[0], arrData[1]);
               // XZ PLANE
               _controllerXZ.changeX(arrData[0]);
               _controllerXZ.changeZ(arrData[1]);
               _controllerXZ.changeG(arrData[3]);
               _controllerXZ.changeHzXZ(arrData[4]);
               _controllerXZ.verifyHzXZ(arrData[4]);
+              _controllerXZ.changePoints(arrData[0], arrData[2]);
               // ZYPLANE
               _controllerZY.changeZ(arrData[0]);
               _controllerZY.changeY(arrData[1]);
               _controllerZY.changeG(arrData[3]);
               _controllerZY.changeHzZY(arrData[4]);
               _controllerZY.verifyHzZY(arrData[4]);
+              _controllerZY.changePoints(arrData[1], arrData[2]);
               return TabBarView(
                 children: <Widget>[
                   _viewXY(),
