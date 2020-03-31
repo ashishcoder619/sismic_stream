@@ -91,42 +91,44 @@ class XZAngle extends CustomPainter {
     var ticksPaint = Paint()
       ..color = Colors.grey
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0
+      ..strokeWidth = 2.0
       ..isAntiAlias = true;
 
-
     double centerX = size.width / 2.0;
-    double centerY = size.height;
+    double centerY = size.height / 2.0;
     double useAngle = (angle - 90) * 0.0174533;
-
     // var centerOffset = Offset(centerX, centerY);
-    var xAngle = cos(useAngle * 1 - pi / 2);
-    var yAngle = sin(useAngle * 1 - pi / 2);
+    double xAngle(double newAngle) => cos(newAngle * 1 - pi / 2);
+    double yAngle(double newAngle) => sin(newAngle * 1 - pi / 2);
 
-    var featureOffset =
-        Offset(centerX + 75 * xAngle, centerY + 75 * yAngle);
-    var invertfeatureOffset =
-        Offset(centerX - 75 * xAngle, centerY - 75 * yAngle);
-    
-
-    canvas.drawLine(Offset(size.width/2.0, size.height / 2.0), featureOffset, ticksPaint);
-    canvas.drawLine(Offset(size.width/2.0, size.height / 2.0), invertfeatureOffset, ticksPaint);
-
-    var paint = Paint ()
-      ..strokeWidth = 2
-      ..isAntiAlias = true
-      ..color = Colors.grey;
-    
-    var max = size.width;
-    var dashWidth = 5;
-    var dashSpace = 5;
-    double startX = 0;
-    final space = (dashSpace + dashWidth);
-
-    while (startX < max) {
-      canvas.drawLine(Offset(startX, 0.0), Offset(startX + dashWidth, 0.0), paint);
-      startX += space;
+    Offset featureOffset(int value) => Offset(
+        centerX + value * xAngle(useAngle), centerY + value * yAngle(useAngle));
+    int cont = 1;
+    int init = 5;
+    int end = 10;
+    while (cont < 13) {
+      if (cont == 1) {
+        canvas.drawCircle(featureOffset(0), 2.0, ticksPaint);
+      }
+      canvas.drawLine(
+        featureOffset(init),
+        featureOffset(end),
+        ticksPaint,
+      );
+      canvas.drawLine(
+        featureOffset(-init),
+        featureOffset(-end),
+        ticksPaint,
+      );
+      init = init + 10;
+      end = end + 10;
+      cont++;
     }
+    canvas.drawLine(
+      Offset(0, size.height / 2),
+      Offset(size.width, size.height / 2),
+      ticksPaint,
+    );
   }
 
   @override

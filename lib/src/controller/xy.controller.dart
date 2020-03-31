@@ -14,8 +14,6 @@ abstract class _XYControllerBase with Store {
   List<List<int>> points = [];
   @observable
   List<List<int>> safetyPoints = [];
-
-
   @observable
   double g = 0;
   @observable
@@ -24,6 +22,10 @@ abstract class _XYControllerBase with Store {
   int hzMaxXY = 0;
   @observable
   int hzMinXY;
+  @observable
+  int fakeRange = 0;
+  @observable
+  int realRange = 0;
 
   @observable
   int _contHz = 0;
@@ -43,7 +45,7 @@ abstract class _XYControllerBase with Store {
       if (cont == 20) cont = 0;
     }
   }
-
+  
   @action
   changeX(int newX) => x = newX;
   @action
@@ -67,4 +69,9 @@ abstract class _XYControllerBase with Store {
       if (newHz < hzMinXY) hzMinXY = newHz;
     }
   }
+  @action
+  changeFakeRange(int newRange) => fakeRange = newRange;
+  @action
+  changeRealRange() => realRange = fakeRange;
+
 }

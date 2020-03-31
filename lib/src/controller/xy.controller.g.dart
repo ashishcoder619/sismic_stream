@@ -145,6 +145,40 @@ mixin _$XYController on _XYControllerBase, Store {
     }, _$hzMinXYAtom, name: '${_$hzMinXYAtom.name}_set');
   }
 
+  final _$fakeRangeAtom = Atom(name: '_XYControllerBase.fakeRange');
+
+  @override
+  int get fakeRange {
+    _$fakeRangeAtom.context.enforceReadPolicy(_$fakeRangeAtom);
+    _$fakeRangeAtom.reportObserved();
+    return super.fakeRange;
+  }
+
+  @override
+  set fakeRange(int value) {
+    _$fakeRangeAtom.context.conditionallyRunInAction(() {
+      super.fakeRange = value;
+      _$fakeRangeAtom.reportChanged();
+    }, _$fakeRangeAtom, name: '${_$fakeRangeAtom.name}_set');
+  }
+
+  final _$realRangeAtom = Atom(name: '_XYControllerBase.realRange');
+
+  @override
+  int get realRange {
+    _$realRangeAtom.context.enforceReadPolicy(_$realRangeAtom);
+    _$realRangeAtom.reportObserved();
+    return super.realRange;
+  }
+
+  @override
+  set realRange(int value) {
+    _$realRangeAtom.context.conditionallyRunInAction(() {
+      super.realRange = value;
+      _$realRangeAtom.reportChanged();
+    }, _$realRangeAtom, name: '${_$realRangeAtom.name}_set');
+  }
+
   final _$_contHzAtom = Atom(name: '_XYControllerBase._contHz');
 
   @override
@@ -246,9 +280,29 @@ mixin _$XYController on _XYControllerBase, Store {
   }
 
   @override
+  dynamic changeFakeRange(int newRange) {
+    final _$actionInfo = _$_XYControllerBaseActionController.startAction();
+    try {
+      return super.changeFakeRange(newRange);
+    } finally {
+      _$_XYControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeRealRange() {
+    final _$actionInfo = _$_XYControllerBaseActionController.startAction();
+    try {
+      return super.changeRealRange();
+    } finally {
+      _$_XYControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'x: ${x.toString()},y: ${y.toString()},points: ${points.toString()},safetyPoints: ${safetyPoints.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()}';
+        'x: ${x.toString()},y: ${y.toString()},points: ${points.toString()},safetyPoints: ${safetyPoints.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
     return '{$string}';
   }
 }

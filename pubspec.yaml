@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   syncfusion_flutter_charts: ^1.0.0-beta.4
+  numberpicker: ^1.2.0
   modern_charts: ^0.1.19
   flutter_blue: ^0.6.2
   geolocator: ^5.2.1

@@ -27,13 +27,32 @@ class XZPosition extends StatelessWidget {
             alignment: Alignment(0, 0),
             children: <Widget>[
               Image(
-                image: AssetImage('assets/images/FRONT.png'),
+                image: AssetImage('assets/images/FRONTNEW.png'),
               ),
               Stack(
                 alignment: Alignment(0, 0),
                 children: <Widget>[
                   CustomPaint(
                     painter: XZRadar(points: points),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "$gValue",
+                    style:
+                        TextStyle(fontFamily: 'Quebec Black', fontSize: 40.0),
+                  ),
+                  Text(
+                    "G",
+                    style: TextStyle(
+                      fontFamily: 'Quebec Black',
+                      color: Colors.lightBlue,
+                      fontSize: 40.0,
+                    ),
                   ),
                 ],
               ),
@@ -44,15 +63,16 @@ class XZPosition extends StatelessWidget {
           children: <Widget>[
             Center(
               child: CustomPaint(
-                size: Size(width / 2, 0),
+                size: Size(width / 1.7, 0),
                 painter: XZAngle(angle: angle),
               ),
             ),
             Center(
               child: Text(
-                "${angle.toInt()}º",
+                "\n${angle.toInt()}°",
                 style: TextStyle(
                   color: angle.toInt() > 15 ? Colors.red : Colors.black,
+                  fontSize: 25,
                 ),
               ),
             ),
@@ -64,8 +84,6 @@ class XZPosition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SizeUtil.getInstance(key: SizeKeyConst.DEVICE_KEY).logicSize = MediaQuery.of(context).size;
-    // SizeUtil.initDesignSize();
     return _position(xValue, zValue, gValue, context);
   }
 }

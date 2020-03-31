@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:flutter/material.dart';
 // BLUETOOTH
 import 'package:flutter_blue/flutter_blue.dart';
@@ -36,7 +38,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   Stream<List<int>> stream;
   bool isReady;
   double _cont = 1;
-  double _range = 0;
+  int _rangeValue = 0;
 
   @override
   void initState() {
@@ -115,8 +117,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           AlertDialog(
             title: Text('Are you sure?'),
             content: Container(
-              width: 500,
-              height: 200,
               child: Text('Do you want to disconnect device and go back?'),
             ),
             actions: <Widget>[
@@ -175,7 +175,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   }
 
   contAngle(double angle) {
-    if (angle == 60) _cont = 1;
+    if (angle == 4) _cont = 1;
     _cont++;
     return angle;
   }
@@ -211,6 +211,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
 
   Widget _viewZY() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Flexible(
           flex: 7,
@@ -220,6 +221,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               yValue: _controllerZY.y,
               gValue: _controllerZY.g,
               points: _controllerXY.points,
+              angle: contAngle(_cont),
             ),
           ),
         ),
@@ -235,12 +237,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
         ),
       ],
     );
-  }
-
-  onchanged(double newValue) {
-    setState(() {
-      _range = newValue;
-    });
   }
 
   Widget _appBar({BuildContext context}) {
@@ -259,28 +255,40 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           icon: Icon(Icons.settings),
           onPressed: () => showDialog(
             context: context,
-            child: AlertDialog(
-              title: Text(
-                'Save data',
-                textAlign: TextAlign.center,
-              ),
-              content: Container(
-                height: 50,
-                child: Slider(
-                    min: 0, max: 100, value: _range, onChanged: onchanged),
-              ),
-              actions: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    FlatButton(
-                      onPressed: null,
-                      child: Text('Save Data'),
+            builder: (context) =>
+                AlertDialog(
+                  title: Text(
+                    'Select amplitude(mm)',
+                    textAlign: TextAlign.center,
+                  ),
+                  content: Observer(
+                    builder: (_) {
+                      return NumberPicker.integer(
+                        initialValue: _controllerXY.fakeRange,
+                        minValue: 0,
+                        maxValue: 10,
+                        onChanged: (newValue) {
+                          _controllerXY.changeFakeRange(newValue);
+                          _rangeValue = newValue;
+                        },
+                      );
+                    },
+                  ),
+                  actions: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            _controllerXY.changeRealRange();
+                            Navigator.pop(context);
+                          },
+                          child: Text('Save amplitude'),
+                        ),
+                      ],
                     ),
                   ],
-                ),
-              ],
-            ),
+                ) ??
+                false,
           ),
         )
       ],

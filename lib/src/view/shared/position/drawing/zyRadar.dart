@@ -224,3 +224,66 @@ class ZYRadar extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
+class ZYAngle extends CustomPainter {
+  final double angle;
+  ZYAngle({this.angle});
+  @override
+  void paint(Canvas canvas, Size size) {
+    var ticksPaint = Paint()
+      ..color = Colors.grey
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 2.0
+      ..isAntiAlias = true;
+
+    double centerX = size.width;
+    double centerY = size.height / 2.0;
+    double useAngle = (angle - 90) * 0.0174533;
+    // var centerOffset = Offset(centerX, centerY);
+    double xAngle(double newAngle) => cos(newAngle * 1 - pi / 2);
+    double yAngle(double newAngle) => sin(newAngle * 1 - pi / 2);
+
+    Offset featureOffset(int value) => Offset(
+        centerX + value * xAngle(useAngle), centerY + value * yAngle(useAngle));
+    Offset offsetAngle({double x, double y, int value, double angle}) =>
+        Offset(x + value * xAngle(angle), y + value * yAngle(angle));
+    // var invertfeatureOffset =
+    //     Offset(centerX - 5 * xAngle, centerY - 5 * yAngle);
+    int cont = 1;
+    int init = 5;
+    int end = 10;
+    while (cont < 25) {
+      if (cont < 21) {
+        if (cont == 1) {
+          canvas.drawCircle(featureOffset(0), 4.0, ticksPaint);
+        }
+        canvas.drawLine(
+          Offset((cont) * size.width / 20, size.height / 2),
+          offsetAngle(
+            x: ((cont) * size.width / 20),
+            y: (size.height / 2),
+            angle: 120,
+            value: -15,
+          ),
+          ticksPaint,
+        );
+      }
+      canvas.drawLine(
+        featureOffset(init),
+        featureOffset(end),
+        ticksPaint,
+      );
+      init = init + 10;
+      end = end + 10;
+      cont++;
+    }
+    canvas.drawLine(
+      Offset(0, size.height / 2),
+      Offset(size.width, size.height / 2),
+      ticksPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+

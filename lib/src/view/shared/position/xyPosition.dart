@@ -21,7 +21,6 @@ class XYPosition extends StatelessWidget {
     double gValue,
     // BuildContext c
   ) {
-    
     return Stack(
       alignment: Alignment(0, 0),
       children: <Widget>[
@@ -45,6 +44,23 @@ class XYPosition extends StatelessWidget {
             // ),
             CustomPaint(
               painter: XYRadar(points: points),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "$gValue",
+                  style: TextStyle(fontFamily: 'Quebec Black', fontSize: 40.0),
+                ),
+                Text(
+                  "G",
+                  style: TextStyle(
+                      fontFamily: 'Quebec Black',
+                      color: Colors.lightBlue,
+                      fontSize: 40.0),
+                ),
+              ],
             ),
           ],
         ),
