@@ -3,19 +3,15 @@ import 'package:flutter/rendering.dart';
 import 'package:sismic_stream/src/view/shared/position/drawing/zyRadar.dart';
 
 class ZYPosition extends StatelessWidget {
-  final int zValue;
-  final int yValue;
   final double gValue;
   final double angle;
   final List<List<int>> points;
   ZYPosition({
-    this.zValue,
-    this.yValue,
     this.gValue,
     this.points,
     this.angle,
   });
-  _position(int zValue, int yValue, double gValue, BuildContext c) {
+  _position(double gValue, BuildContext c) {
     double width = MediaQuery.of(c).size.shortestSide;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -85,8 +81,6 @@ class ZYPosition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _position(
-      zValue,
-      yValue,
       gValue,
       context
     );

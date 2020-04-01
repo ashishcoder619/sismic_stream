@@ -152,11 +152,10 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           flex: 7,
           child: Center(
             child: XYPosition(
-              xValue: _controllerXY.x,
-              yValue: _controllerXY.y,
               gValue: _controllerXY.g,
               points: _controllerXY.points,
               pointsWithRange: _controllerXY.pointsWithRange,
+              isInRange: _controllerXY.isInRange
             ),
           ),
         ),
@@ -187,8 +186,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           flex: 7,
           child: Center(
             child: XZPosition(
-              xValue: _controllerXZ.x,
-              zValue: _controllerXZ.z,
               gValue: _controllerXZ.g,
               points: _controllerXZ.points,
               angle: contAngle(_cont),
@@ -217,8 +214,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           flex: 7,
           child: Center(
             child: ZYPosition(
-              zValue: _controllerZY.z,
-              yValue: _controllerZY.y,
               gValue: _controllerZY.g,
               points: _controllerZY.points,
               angle: contAngle(_cont),
@@ -258,7 +253,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             builder: (context) =>
                 AlertDialog(
                   title: Text(
-                    'Select amplitude\n(mm)\n${_controllerXY.realRange}',
+                    'Select amplitude\n(mm)',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
@@ -268,7 +263,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                     builder: (_) {
                       return NumberPicker.integer(
                         initialValue: _controllerXY.fakeRange,
-                        minValue: 10,
+                        minValue: 1,
                         maxValue: 100,
                         onChanged: (newValue) {
                           _controllerXY.changeFakeRange(newValue);
@@ -327,22 +322,16 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             case ConnectionState.active:
               // XY PLANE
               List<num> arrData = _listParser(snapshot.data);
-              // _controllerXY.changeX(arrData[0]);
-              // _controllerXY.changeY(arrData[1]);
               _controllerXY.changeG(arrData[3]);
               _controllerXY.changeHzXY(arrData[4]);
               _controllerXY.verifyHzXY(arrData[4]);
               _controllerXY.changePoints(arrData[0], arrData[1]);
               // XZ PLANE
-              _controllerXZ.changeX(arrData[0]);
-              _controllerXZ.changeZ(arrData[1]);
               _controllerXZ.changeG(arrData[3]);
               _controllerXZ.changeHzXZ(arrData[4]);
               _controllerXZ.verifyHzXZ(arrData[4]);
               _controllerXZ.changePoints(arrData[0], arrData[2]);
               // ZYPLANE
-              _controllerZY.changeZ(arrData[0]);
-              _controllerZY.changeY(arrData[1]);
               _controllerZY.changeG(arrData[3]);
               _controllerZY.changeHzZY(arrData[4]);
               _controllerZY.verifyHzZY(arrData[4]);

@@ -7,10 +7,6 @@ abstract class _XZControllerBase with Store {
   int cont = 0;
   bool firstPoints = true;
   @observable
-  int x;
-  @observable
-  int z;
-  @observable
   List<List<int>> points = [];
   @observable
   double g;
@@ -44,10 +40,6 @@ abstract class _XZControllerBase with Store {
     }
   }
 
-  @action
-  changeX(int newX) => x = newX;
-  @action
-  changeZ(int newZ) => z = newZ;
   @action
   changeG(double newG) => g = newG;
   @action

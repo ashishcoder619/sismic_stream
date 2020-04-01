@@ -4,24 +4,19 @@ import 'drawing/drawRoundAngle/size_const.dart';
 import 'drawing/xyRadar.dart';
 
 class XYPosition extends StatelessWidget {
-  final int xValue;
-  final int yValue;
   final double gValue;
   final List<List> points;
   final List<List> pointsWithRange;
+  final bool isInRange;
   XYPosition({
-    this.xValue,
-    this.yValue,
     this.gValue,
     this.points,
     this.pointsWithRange,
+    this.isInRange,
   });
 
   Widget _position(
-    int xValue,
-    int yValue,
     double gValue,
-    // BuildContext c
   ) {
     return Stack(
       alignment: Alignment(0, 0),
@@ -45,7 +40,11 @@ class XYPosition extends StatelessWidget {
             //       .toList(),
             // ),
             CustomPaint(
-              painter: XYRadar(points: points),
+              painter: XYRadar(
+                points: points,
+                pointsWithRange: pointsWithRange,
+                isInRange: isInRange,
+              ),
             ),
             pointsWithRange.length != 0
                 ? CustomPaint(
@@ -80,8 +79,6 @@ class XYPosition extends StatelessWidget {
     SizeUtil.getInstance().logicSize = MediaQuery.of(context).size;
     SizeUtil.initDesignSize();
     return _position(
-      xValue,
-      yValue,
       gValue,
       // context
     );

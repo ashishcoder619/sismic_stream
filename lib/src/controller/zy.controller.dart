@@ -7,10 +7,6 @@ abstract class _ZYControllerBase with Store {
   int cont = 0;
   bool firstPoints = true;
   @observable
-  int z;
-  @observable
-  int y;
-  @observable
   List<List<int>> points = [];
   @observable
   double g;
@@ -44,10 +40,6 @@ abstract class _ZYControllerBase with Store {
     }
   }
 
-  @action
-  changeZ(int newZ) => z = newZ;
-  @action
-  changeY(int newY) => y = newY;
   @action
   changeG(double newG) => g = newG;
   @action

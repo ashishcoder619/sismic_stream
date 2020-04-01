@@ -9,10 +9,6 @@ abstract class _XYControllerBase with Store {
   int cont = 0;
   bool firstPoints = true;
   @observable
-  int x = 0;
-  @observable
-  int y = 0;
-  @observable
   List<List<int>> points = [];
   @observable
   List<List<double>> pointsWithRange = [];
@@ -30,10 +26,13 @@ abstract class _XYControllerBase with Store {
   int realRange = 10;
 
   @observable
+  bool isInRange = true;
+
+  @observable
   int _contHz = 0;
 
   List<double> newPointWithRange(List<int> point, int range) => [
-    // using pythagorean theorem
+        // using pythagorean theorem
         point[0] *
             (sqrt(pow(point[0], 2) + pow(point[1], 2)) + range) /
             (sqrt(pow(point[0], 2) + pow(point[1], 2))),
@@ -42,9 +41,11 @@ abstract class _XYControllerBase with Store {
             (sqrt(pow(point[0], 2) + pow(point[1], 2))),
       ];
   @action
-  addPointsWithRange(List<List<int>> points){
-    pointsWithRange = points.map((point) => newPointWithRange(point, realRange)).toList();
+  addPointsWithRange(List<List<int>> points) {
+    pointsWithRange =
+        points.map((point) => newPointWithRange(point, realRange)).toList();
   }
+
   @action
   changePoints(int newX, int newY) {
     if (cont <= 20 && firstPoints) {
@@ -56,15 +57,17 @@ abstract class _XYControllerBase with Store {
       }
     } else {
       points[cont] = [newX, newY];
+      if (pointsWithRange.length > 0)
+        sqrt(pow(newX, 2) + pow(newY, 2)) >
+                sqrt(pow(pointsWithRange[cont][0], 2) +
+                    pow(pointsWithRange[cont][1], 2))
+            ? isInRange = false
+            : isInRange = true;
       cont++;
       if (cont == 20) cont = 0;
     }
   }
 
-  @action
-  changeX(int newX) => x = newX;
-  @action
-  changeY(int newY) => y = newY;
   @action
   changeG(double newG) => g = newG;
   @action

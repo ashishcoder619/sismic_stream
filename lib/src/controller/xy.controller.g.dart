@@ -9,40 +9,6 @@ part of 'xy.controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$XYController on _XYControllerBase, Store {
-  final _$xAtom = Atom(name: '_XYControllerBase.x');
-
-  @override
-  int get x {
-    _$xAtom.context.enforceReadPolicy(_$xAtom);
-    _$xAtom.reportObserved();
-    return super.x;
-  }
-
-  @override
-  set x(int value) {
-    _$xAtom.context.conditionallyRunInAction(() {
-      super.x = value;
-      _$xAtom.reportChanged();
-    }, _$xAtom, name: '${_$xAtom.name}_set');
-  }
-
-  final _$yAtom = Atom(name: '_XYControllerBase.y');
-
-  @override
-  int get y {
-    _$yAtom.context.enforceReadPolicy(_$yAtom);
-    _$yAtom.reportObserved();
-    return super.y;
-  }
-
-  @override
-  set y(int value) {
-    _$yAtom.context.conditionallyRunInAction(() {
-      super.y = value;
-      _$yAtom.reportChanged();
-    }, _$yAtom, name: '${_$yAtom.name}_set');
-  }
-
   final _$pointsAtom = Atom(name: '_XYControllerBase.points');
 
   @override
@@ -179,6 +145,23 @@ mixin _$XYController on _XYControllerBase, Store {
     }, _$realRangeAtom, name: '${_$realRangeAtom.name}_set');
   }
 
+  final _$isInRangeAtom = Atom(name: '_XYControllerBase.isInRange');
+
+  @override
+  bool get isInRange {
+    _$isInRangeAtom.context.enforceReadPolicy(_$isInRangeAtom);
+    _$isInRangeAtom.reportObserved();
+    return super.isInRange;
+  }
+
+  @override
+  set isInRange(bool value) {
+    _$isInRangeAtom.context.conditionallyRunInAction(() {
+      super.isInRange = value;
+      _$isInRangeAtom.reportChanged();
+    }, _$isInRangeAtom, name: '${_$isInRangeAtom.name}_set');
+  }
+
   final _$_contHzAtom = Atom(name: '_XYControllerBase._contHz');
 
   @override
@@ -214,26 +197,6 @@ mixin _$XYController on _XYControllerBase, Store {
     final _$actionInfo = _$_XYControllerBaseActionController.startAction();
     try {
       return super.changePoints(newX, newY);
-    } finally {
-      _$_XYControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic changeX(int newX) {
-    final _$actionInfo = _$_XYControllerBaseActionController.startAction();
-    try {
-      return super.changeX(newX);
-    } finally {
-      _$_XYControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic changeY(int newY) {
-    final _$actionInfo = _$_XYControllerBaseActionController.startAction();
-    try {
-      return super.changeY(newY);
     } finally {
       _$_XYControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -312,7 +275,7 @@ mixin _$XYController on _XYControllerBase, Store {
   @override
   String toString() {
     final string =
-        'x: ${x.toString()},y: ${y.toString()},points: ${points.toString()},pointsWithRange: ${pointsWithRange.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
+        'points: ${points.toString()},pointsWithRange: ${pointsWithRange.toString()},g: ${g.toString()},hzXY: ${hzXY.toString()},hzMaxXY: ${hzMaxXY.toString()},hzMinXY: ${hzMinXY.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()},isInRange: ${isInRange.toString()}';
     return '{$string}';
   }
 }

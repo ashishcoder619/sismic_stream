@@ -46,7 +46,13 @@ SizeUtil get _sizeUtil {
 
 class XYRadar extends CustomPainter {
   List<List<int>> points;
-  XYRadar({this.points});
+  List<List<double>> pointsWithRange;
+  bool isInRange;
+  XYRadar({
+    this.points,
+    this.pointsWithRange,
+    this.isInRange,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -56,12 +62,14 @@ class XYRadar extends CustomPainter {
     }
     var paint = Paint()
       ..style = PaintingStyle.fill
-      ..color = Colors.green[600].withOpacity(0.5)
+      ..color = isInRange ? Colors.green[600].withOpacity(0.5) : Colors.red.withOpacity(0.5)
       ..isAntiAlias = true;
-    List<Point> list1 = points.map((e) => Point(e[0].toDouble(), -e[1].toDouble())).toList();
+    List<Point> list1 =
+        points.map((e) => Point(e[0].toDouble(), -e[1].toDouble())).toList();
     
+
     var graphOutlinePaint = Paint()
-      ..color = Colors.green
+      ..color = isInRange ? Colors.green : Colors.red
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
       ..isAntiAlias = false;
@@ -94,8 +102,10 @@ class XYRadarWithRange extends CustomPainter {
       print(">1.9");
     }
 
-    List<Point> points = pointsWithRange.map((e) => Point(e[0].toDouble(), -e[1].toDouble())).toList();
-    
+    List<Point> points = pointsWithRange
+        .map((e) => Point(e[0].toDouble(), -e[1].toDouble()))
+        .toList();
+
     var graphOutlinePaint = Paint()
       ..color = Colors.blue[300]
       ..style = PaintingStyle.stroke

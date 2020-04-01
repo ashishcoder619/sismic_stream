@@ -9,40 +9,6 @@ part of 'xz.controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$XZController on _XZControllerBase, Store {
-  final _$xAtom = Atom(name: '_XZControllerBase.x');
-
-  @override
-  int get x {
-    _$xAtom.context.enforceReadPolicy(_$xAtom);
-    _$xAtom.reportObserved();
-    return super.x;
-  }
-
-  @override
-  set x(int value) {
-    _$xAtom.context.conditionallyRunInAction(() {
-      super.x = value;
-      _$xAtom.reportChanged();
-    }, _$xAtom, name: '${_$xAtom.name}_set');
-  }
-
-  final _$zAtom = Atom(name: '_XZControllerBase.z');
-
-  @override
-  int get z {
-    _$zAtom.context.enforceReadPolicy(_$zAtom);
-    _$zAtom.reportObserved();
-    return super.z;
-  }
-
-  @override
-  set z(int value) {
-    _$zAtom.context.conditionallyRunInAction(() {
-      super.z = value;
-      _$zAtom.reportChanged();
-    }, _$zAtom, name: '${_$zAtom.name}_set');
-  }
-
   final _$pointsAtom = Atom(name: '_XZControllerBase.points');
 
   @override
@@ -176,26 +142,6 @@ mixin _$XZController on _XZControllerBase, Store {
   }
 
   @override
-  dynamic changeX(int newX) {
-    final _$actionInfo = _$_XZControllerBaseActionController.startAction();
-    try {
-      return super.changeX(newX);
-    } finally {
-      _$_XZControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic changeZ(int newZ) {
-    final _$actionInfo = _$_XZControllerBaseActionController.startAction();
-    try {
-      return super.changeZ(newZ);
-    } finally {
-      _$_XZControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   dynamic changeG(double newG) {
     final _$actionInfo = _$_XZControllerBaseActionController.startAction();
     try {
@@ -268,7 +214,7 @@ mixin _$XZController on _XZControllerBase, Store {
   @override
   String toString() {
     final string =
-        'x: ${x.toString()},z: ${z.toString()},points: ${points.toString()},g: ${g.toString()},hzXZ: ${hzXZ.toString()},hzMaxXZ: ${hzMaxXZ.toString()},hzMinXZ: ${hzMinXZ.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
+        'points: ${points.toString()},g: ${g.toString()},hzXZ: ${hzXZ.toString()},hzMaxXZ: ${hzMaxXZ.toString()},hzMinXZ: ${hzMinXZ.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
     return '{$string}';
   }
 }

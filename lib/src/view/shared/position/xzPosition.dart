@@ -3,20 +3,16 @@ import 'package:flutter/rendering.dart';
 import 'drawing/xzRadar.dart';
 
 class XZPosition extends StatelessWidget {
-  final int xValue;
-  final int zValue;
   final double gValue;
   final double angle;
   final List<List> points;
   XZPosition({
-    this.xValue,
-    this.zValue,
     this.gValue,
     this.points,
     this.angle,
   });
 
-  Widget _position(int xValue, int zValue, double gValue, BuildContext c) {
+  Widget _position(double gValue, BuildContext c) {
     double width = MediaQuery.of(c).size.shortestSide;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -84,7 +80,7 @@ class XZPosition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _position(xValue, zValue, gValue, context);
+    return _position(gValue, context);
   }
 }
 
