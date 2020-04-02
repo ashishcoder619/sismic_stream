@@ -16,6 +16,8 @@ abstract class _XZControllerBase with Store {
   int hzMaxXZ;
   @observable
   int hzMinXZ;
+  @observable
+  int angleXZ = 0;
 
   @observable
   int fakeRange = 0;
@@ -48,6 +50,8 @@ abstract class _XZControllerBase with Store {
   changeHzMaxXZ(int newHzMaxXZ) => hzMaxXZ = newHzMaxXZ;
   @action
   changeHzMinXZ(int newHzMinXZ) => hzMinXZ = newHzMinXZ;
+  @action
+  changeAngleXZ(int newAngleXZ) => angleXZ = newAngleXZ;
   @action
   verifyHzXZ(int newHz) {
     if (_contHz == 0) {

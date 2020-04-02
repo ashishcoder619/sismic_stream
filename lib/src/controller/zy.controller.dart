@@ -16,6 +16,8 @@ abstract class _ZYControllerBase with Store {
   int hzMaxZY;
   @observable
   int hzMinZY;
+  @observable
+  int angleZY = 0;
 
   @observable 
   int fakeRange = 0;
@@ -48,6 +50,8 @@ abstract class _ZYControllerBase with Store {
   changeHzMaxZY(int newHzMaxZY) => hzMaxZY = newHzMaxZY;
   @action
   changeHzMinZY(int newHzMinZY) => hzMinZY = newHzMinZY;
+  @action
+  changeAngleZY(int newAngleZY) => angleZY = newAngleZY;
   @action
   verifyHzZY(int newHz) {
     if (_contHz == 0) {

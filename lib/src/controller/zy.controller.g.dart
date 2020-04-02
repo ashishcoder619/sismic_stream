@@ -94,6 +94,23 @@ mixin _$ZYController on _ZYControllerBase, Store {
     }, _$hzMinZYAtom, name: '${_$hzMinZYAtom.name}_set');
   }
 
+  final _$angleZYAtom = Atom(name: '_ZYControllerBase.angleZY');
+
+  @override
+  int get angleZY {
+    _$angleZYAtom.context.enforceReadPolicy(_$angleZYAtom);
+    _$angleZYAtom.reportObserved();
+    return super.angleZY;
+  }
+
+  @override
+  set angleZY(int value) {
+    _$angleZYAtom.context.conditionallyRunInAction(() {
+      super.angleZY = value;
+      _$angleZYAtom.reportChanged();
+    }, _$angleZYAtom, name: '${_$angleZYAtom.name}_set');
+  }
+
   final _$fakeRangeAtom = Atom(name: '_ZYControllerBase.fakeRange');
 
   @override
@@ -182,6 +199,16 @@ mixin _$ZYController on _ZYControllerBase, Store {
   }
 
   @override
+  dynamic changeAngleZY(int newAngleZY) {
+    final _$actionInfo = _$_ZYControllerBaseActionController.startAction();
+    try {
+      return super.changeAngleZY(newAngleZY);
+    } finally {
+      _$_ZYControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic verifyHzZY(int newHz) {
     final _$actionInfo = _$_ZYControllerBaseActionController.startAction();
     try {
@@ -214,7 +241,7 @@ mixin _$ZYController on _ZYControllerBase, Store {
   @override
   String toString() {
     final string =
-        'points: ${points.toString()},g: ${g.toString()},hzZY: ${hzZY.toString()},hzMaxZY: ${hzMaxZY.toString()},hzMinZY: ${hzMinZY.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
+        'points: ${points.toString()},g: ${g.toString()},hzZY: ${hzZY.toString()},hzMaxZY: ${hzMaxZY.toString()},hzMinZY: ${hzMinZY.toString()},angleZY: ${angleZY.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
     return '{$string}';
   }
 }

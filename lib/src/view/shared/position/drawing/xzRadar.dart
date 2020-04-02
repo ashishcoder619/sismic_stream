@@ -51,7 +51,7 @@ class XZRadar extends CustomPainter {
 }
 
 class XZAngle extends CustomPainter {
-  final double angle;
+  final int angle;
   XZAngle({this.angle});
   @override
   void paint(Canvas canvas, Size size) {
@@ -63,7 +63,7 @@ class XZAngle extends CustomPainter {
 
     double centerX = size.width / 2.0;
     double centerY = size.height / 2.0;
-    double useAngle = (angle - 90) * 0.0174533;
+    double useAngle = (angle.toDouble() - 90) * 0.0174533;
     // var centerOffset = Offset(centerX, centerY);
     double xAngle(double newAngle) => cos(newAngle * 1 - pi / 2);
     double yAngle(double newAngle) => sin(newAngle * 1 - pi / 2);
@@ -73,7 +73,8 @@ class XZAngle extends CustomPainter {
     int cont = 1;
     int init = 5;
     int end = 10;
-    while (cont < 13) {
+    double max = size.width / 2;
+    while (end < max) {
       if (cont == 1) {
         canvas.drawCircle(featureOffset(0), 2.0, ticksPaint);
       }
@@ -92,8 +93,8 @@ class XZAngle extends CustomPainter {
       cont++;
     }
     canvas.drawLine(
-      Offset(0, size.height / 2),
-      Offset(size.width, size.height / 2),
+      Offset(5, size.height / 2),
+      Offset(size.width - 5, size.height / 2),
       ticksPaint,
     );
   }

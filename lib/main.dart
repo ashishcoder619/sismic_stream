@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'src/home.dart';
+import 'src/login.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Quebec Black',
         primaryColor: Colors.white,  
       ),
-      home: SismicHome(),
+      home: Login(),
     );
   }
 }

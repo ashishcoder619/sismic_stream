@@ -37,7 +37,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   final _controllerZY = ZYController();
   Stream<List<int>> stream;
   bool isReady;
-  double _cont = 1;
 
   @override
   void initState() {
@@ -141,6 +140,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
 
   List<num> _listParser(List<int> dataFromDevice) {
     String stringData = utf8.decode(dataFromDevice);
+    print(stringData.split('|').map((e) => num.parse(e)).toList());
     return stringData.split('|').map((e) => num.parse(e)).toList();
   }
 
@@ -173,11 +173,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  contAngle(double angle) {
-    if (angle == 4) _cont = 1;
-    _cont++;
-    return angle;
-  }
 
   Widget _viewXZ() {
     return Column(
@@ -188,7 +183,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             child: XZPosition(
               gValue: _controllerXZ.g,
               points: _controllerXZ.points,
-              angle: contAngle(_cont),
+              angle: _controllerXZ.angleXZ,
             ),
           ),
         ),
@@ -216,7 +211,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             child: ZYPosition(
               gValue: _controllerZY.g,
               points: _controllerZY.points,
-              angle: contAngle(_cont),
+              angle: _controllerZY.angleZY,
             ),
           ),
         ),
@@ -312,8 +307,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     return StreamBuilder<List<int>>(
       stream: stream,
       initialData: [],
-      builder: (c, AsyncSnapshot<List<int>> snapshot) {
-        // print("CONNECTION STATE: ${snapshot.connectionState}");
+      builder: (c, AsyncSnapshot<List> snapshot) {
+        print("snapshot.data: ${snapshot.data}");
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         }
@@ -321,7 +316,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
               // XY PLANE
-              List<num> arrData = _listParser(snapshot.data);
+              List arrData = _listParser(snapshot.data);
               _controllerXY.changeG(arrData[3]);
               _controllerXY.changeHzXY(arrData[4]);
               _controllerXY.verifyHzXY(arrData[4]);
@@ -331,11 +326,13 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               _controllerXZ.changeHzXZ(arrData[4]);
               _controllerXZ.verifyHzXZ(arrData[4]);
               _controllerXZ.changePoints(arrData[0], arrData[2]);
+              // _controllerXZ.changeAngleXZ(arrData[5]);
               // ZYPLANE
               _controllerZY.changeG(arrData[3]);
               _controllerZY.changeHzZY(arrData[4]);
               _controllerZY.verifyHzZY(arrData[4]);
               _controllerZY.changePoints(arrData[1], arrData[2]);
+              // _controllerZY.changeAngleZY(arrData[6]);
               return TabBarView(
                 children: <Widget>[
                   _viewXY(),

@@ -225,7 +225,7 @@ class ZYRadar extends CustomPainter {
 }
 
 class ZYAngle extends CustomPainter {
-  final double angle;
+  final int angle;
   ZYAngle({this.angle});
   @override
   void paint(Canvas canvas, Size size) {
@@ -251,7 +251,8 @@ class ZYAngle extends CustomPainter {
     int cont = 1;
     int init = 5;
     int end = 10;
-    while (cont < 25) {
+    double max = size.width;
+    while (end < max) {
       if (cont < 21) {
         if (cont == 1) {
           canvas.drawCircle(featureOffset(0), 4.0, ticksPaint);

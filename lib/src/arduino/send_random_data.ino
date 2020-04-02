@@ -35,10 +35,9 @@ const int vout = 36;                                            //analog input
 variable
 */
 int x, y, z, g, hz;
+int angleXZ, angleZY;
 
-
-void setup(void)
-{
+void setup(void){
   pinMode(iled, OUTPUT);
   digitalWrite(iled, LOW);                                     //iled default closed
   
@@ -80,48 +79,87 @@ void setup(void)
   Serial.println("Waiting a client connection to notify...");
 }
 
-int centerElipse(int x){
+int centerElipsePos(int x){
   int x2 = pow(x, 2);
   int result = (int) sqrt((225000000-10000*x2)/(22500));
   return result;
 }
-//---------------------------------------------------------------------
+int centerElipseNeg(int x){
+  int x2 = pow(x, 2);
+  int result = (int) -sqrt((225000000-10000*x2)/(22500));
+  return result;
+}
+
 int firstElipsePos(int x){
   int x2 = pow(x, 2);
-//  int result = (int) sqrt((225000000-10000*(x2-(30*x)+225))/(22500))+15;
   int result = (int) sqrt((158760000-8100*x2)/(19600));
   return result;
 }
 int firstElipseNeg(int x){
   int x2 = pow(x, 2);
-//  int result = (int) -sqrt((225000000-(10000*(x2-(30*x)+225)))/(22500))+15;
   int result = (int) -sqrt((158760000-8100*x2)/(19600));
   return result;
 }
 //---------------------------------------------------------------------
+int zElipsePos(int x){
+  int x2 = pow(x, 2);
+  int result = (int) sqrt((14062500-625*x2)/(22500));
+  return result;
+}
+int zElipseNeg(int x){
+  int x2 = pow(x, 2);
+  int result = (int) -sqrt((14062500-625*x2)/(22500));
+  return result;
+}
+int zFirstElipsePos(int x){
+  int x2 = pow(x, 2);
+  int result = (int) sqrt((4410000-225*x2)/(19600));
+  return result;
+}
+int zFirstElipseNeg(int x){
+  int x2 = pow(x, 2);
+  int result = (int) -sqrt((4410000-225*x2)/(19600));
+  return result;
+}
+//---------------------------------------------------------------------
+
 
 int contQuad = -150;
 bool positiveElipse = true;
 int contElipse = 0;
+int contAngleXZ = 0;
+int contAngleZY = 0;
 
 void loop(void){
+   if(contAngleXZ < 5){
+     angleXZ = contAngleXZ;
+     contAngleXZ++;
+   }else{
+     angleXZ = contAngleXZ;
+     contAngleXZ = 0;
+   }
+   if(contAngleZY < 16){
+     angleZY = contAngleZY; 
+     contAngleZY++;
+   }else{
+     angleZY = contAngleZY; 
+     contAngleZY = 0;
+   }
+   
    switch(contElipse){
        case 0:
         if((contQuad <= 150) && (positiveElipse == true)){
-            if(contQuad > 0){
-              x = contQuad + 30;
-              y = centerElipse(contQuad) + 30;
-            }else{
-              x = contQuad ;
-              y = centerElipse(x);
-            }
+            x = contQuad;
+            y = centerElipsePos(contQuad);
+            z = zElipsePos(contQuad);
             contQuad = contQuad + 30;
             if(contQuad == 150){
                 positiveElipse = false;
             }
         }else{
             x = contQuad;
-            y = -centerElipse(x);
+            y = centerElipseNeg(x);
+            z =  zElipseNeg(contQuad);
             contQuad = contQuad - 30;
             if(contQuad == -150){
                 positiveElipse = true;
@@ -132,12 +170,14 @@ void loop(void){
         break;
         case 1:
         if((contQuad <= 140) && (positiveElipse == true)){
-             if(contQuad > 0){
-              x = contQuad + 30;
-              y = firstElipsePos(contQuad) + 30;
+            if(contQuad > 0){
+              x = contQuad;
+              y = firstElipsePos(contQuad);
+              z = zFirstElipsePos(contQuad);
             }else{
               x = contQuad ;
               y = firstElipsePos(x);
+              z = zFirstElipsePos(contQuad);
             }
             contQuad = contQuad + 28;
             if(contQuad == 140){
@@ -146,6 +186,7 @@ void loop(void){
         }else{
             x = contQuad;
             y = firstElipseNeg(x);
+            z = zFirstElipseNeg(contQuad);
             contQuad = contQuad - 28;
             if(contQuad == -140){
                 positiveElipse = true;
@@ -154,34 +195,12 @@ void loop(void){
             }
         }
         break;
-   } 
-    
-  
-  z = random(10,20);
-  g =random(0,9);
-  hz = random(5,15);
-
+   }
+  g = random(0,9);
+  hz = random(13, 15);
   /*
   display the result
   */
-  Serial.print("\n");
-  Serial.print("The current data is: ");
-  Serial.print("x: ");
-  Serial.print(x);
-  Serial.print("\n");
-   Serial.print("y: ");
-  Serial.print(y);
-  Serial.print("\n");
-  Serial.print("z: ");
-  Serial.print(z);
-  Serial.print("\n");
-  Serial.print("g: ");
-  Serial.print(g);
-  Serial.print("\n");
-  Serial.print("hz: ");
-  Serial.print(hz);
-  Serial.print("\n");  
-
 
   // notify changed value
     if (deviceConnected) {
@@ -196,9 +215,12 @@ void loop(void){
         str += g;
         str += "|";
         str += hz;
-
+//        str += "|";
+//        str += contAngleXZ;
+//        str += "|";
+//        str += contAngleZY;
+        
         Serial.print("The current str is: ");
-        Serial.print("\n");
         Serial.print(str);
         
         pCharacteristic->setValue((char*)str.c_str());
@@ -217,5 +239,5 @@ void loop(void){
         oldDeviceConnected = deviceConnected;
     }
   
-  delay(60);
+  delay(200);
 }

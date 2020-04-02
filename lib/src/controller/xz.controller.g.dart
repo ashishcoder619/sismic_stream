@@ -94,6 +94,23 @@ mixin _$XZController on _XZControllerBase, Store {
     }, _$hzMinXZAtom, name: '${_$hzMinXZAtom.name}_set');
   }
 
+  final _$angleXZAtom = Atom(name: '_XZControllerBase.angleXZ');
+
+  @override
+  int get angleXZ {
+    _$angleXZAtom.context.enforceReadPolicy(_$angleXZAtom);
+    _$angleXZAtom.reportObserved();
+    return super.angleXZ;
+  }
+
+  @override
+  set angleXZ(int value) {
+    _$angleXZAtom.context.conditionallyRunInAction(() {
+      super.angleXZ = value;
+      _$angleXZAtom.reportChanged();
+    }, _$angleXZAtom, name: '${_$angleXZAtom.name}_set');
+  }
+
   final _$fakeRangeAtom = Atom(name: '_XZControllerBase.fakeRange');
 
   @override
@@ -182,6 +199,16 @@ mixin _$XZController on _XZControllerBase, Store {
   }
 
   @override
+  dynamic changeAngleXZ(int newAngleXZ) {
+    final _$actionInfo = _$_XZControllerBaseActionController.startAction();
+    try {
+      return super.changeAngleXZ(newAngleXZ);
+    } finally {
+      _$_XZControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic verifyHzXZ(int newHz) {
     final _$actionInfo = _$_XZControllerBaseActionController.startAction();
     try {
@@ -214,7 +241,7 @@ mixin _$XZController on _XZControllerBase, Store {
   @override
   String toString() {
     final string =
-        'points: ${points.toString()},g: ${g.toString()},hzXZ: ${hzXZ.toString()},hzMaxXZ: ${hzMaxXZ.toString()},hzMinXZ: ${hzMinXZ.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
+        'points: ${points.toString()},g: ${g.toString()},hzXZ: ${hzXZ.toString()},hzMaxXZ: ${hzMaxXZ.toString()},hzMinXZ: ${hzMinXZ.toString()},angleXZ: ${angleXZ.toString()},fakeRange: ${fakeRange.toString()},realRange: ${realRange.toString()}';
     return '{$string}';
   }
 }

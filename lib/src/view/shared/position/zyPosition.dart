@@ -4,7 +4,7 @@ import 'package:sismic_stream/src/view/shared/position/drawing/zyRadar.dart';
 
 class ZYPosition extends StatelessWidget {
   final double gValue;
-  final double angle;
+  final int angle;
   final List<List<int>> points;
   ZYPosition({
     this.gValue,

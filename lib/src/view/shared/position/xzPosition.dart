@@ -4,7 +4,7 @@ import 'drawing/xzRadar.dart';
 
 class XZPosition extends StatelessWidget {
   final double gValue;
-  final double angle;
+  final int angle;
   final List<List> points;
   XZPosition({
     this.gValue,
