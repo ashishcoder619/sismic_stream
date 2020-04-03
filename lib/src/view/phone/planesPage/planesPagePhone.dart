@@ -6,6 +6,7 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:flutter/material.dart';
 // BLUETOOTH
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:sismic_stream/src/controller/login.controller.dart';
 // CONTROLLERS
 import 'package:sismic_stream/src/controller/xy.controller.dart';
 import 'package:sismic_stream/src/controller/xz.controller.dart';
@@ -21,6 +22,8 @@ import 'package:sismic_stream/src/view/shared/position/xyPosition.dart';
 import 'package:sismic_stream/src/view/shared/position/xzPosition.dart';
 import 'package:sismic_stream/src/view/shared/position/zyPosition.dart';
 
+import '../../../login.dart';
+
 class PlanesPagePhone extends StatefulWidget {
   const PlanesPagePhone({Key key, this.device}) : super(key: key);
   final BluetoothDevice device;
@@ -35,6 +38,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   final _controllerXY = XYController();
   final _controllerXZ = XZController();
   final _controllerZY = ZYController();
+  final _controllerLogin = LoginController();
   Stream<List<int>> stream;
   bool isReady;
 
@@ -67,7 +71,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       _Pop();
       return;
     }
-
     widget.device.disconnect();
   }
 
@@ -152,11 +155,10 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           flex: 7,
           child: Center(
             child: XYPosition(
-              gValue: _controllerXY.g,
-              points: _controllerXY.points,
-              pointsWithRange: _controllerXY.pointsWithRange,
-              isInRange: _controllerXY.isInRange
-            ),
+                gValue: _controllerXY.g,
+                points: _controllerXY.points,
+                pointsWithRange: _controllerXY.pointsWithRange,
+                isInRange: _controllerXY.isInRange),
           ),
         ),
         Flexible(
@@ -172,7 +174,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       ],
     );
   }
-
 
   Widget _viewXZ() {
     return Column(
@@ -272,7 +273,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                         FlatButton(
                           onPressed: () {
                             _controllerXY.changeRealRange();
-                            _controllerXY.addPointsWithRange(_controllerXY.points);
+                            _controllerXY
+                                .addPointsWithRange(_controllerXY.points);
                             Navigator.pop(context);
                           },
                           child: Text('Save amplitude'),
@@ -303,11 +305,11 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
     );
   }
 
-  Widget _body(c) {
+  Widget _stream({BuildContext context}) {
     return StreamBuilder<List<int>>(
       stream: stream,
       initialData: [],
-      builder: (c, AsyncSnapshot<List> snapshot) {
+      builder: (context, AsyncSnapshot<List> snapshot) {
         print("snapshot.data: ${snapshot.data}");
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -315,31 +317,58 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
         if (snapshot.data.isEmpty == false) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
-              // XY PLANE
+              Size screen = MediaQuery.of(context).size;
               List arrData = _listParser(snapshot.data);
-              _controllerXY.changeG(arrData[3]);
-              _controllerXY.changeHzXY(arrData[4]);
-              _controllerXY.verifyHzXY(arrData[4]);
-              _controllerXY.changePoints(arrData[0], arrData[1]);
-              // XZ PLANE
-              _controllerXZ.changeG(arrData[3]);
-              _controllerXZ.changeHzXZ(arrData[4]);
-              _controllerXZ.verifyHzXZ(arrData[4]);
-              _controllerXZ.changePoints(arrData[0], arrData[2]);
-              // _controllerXZ.changeAngleXZ(arrData[5]);
-              // ZYPLANE
-              _controllerZY.changeG(arrData[3]);
-              _controllerZY.changeHzZY(arrData[4]);
-              _controllerZY.verifyHzZY(arrData[4]);
-              _controllerZY.changePoints(arrData[1], arrData[2]);
-              // _controllerZY.changeAngleZY(arrData[6]);
-              return TabBarView(
-                children: <Widget>[
-                  _viewXY(),
-                  _viewXZ(),
-                  _viewZY(),
-                ],
-              );
+              if (arrData.length == 1) {
+                return Scaffold(
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Center(
+                          child: Image.asset(
+                            "assets/images/SBAGUIA.png",
+                            width: screen.width / 2.5,
+                            height: screen.width / 2.5,
+                          ),
+                        ),
+                        textField(
+                          width: screen.width / 1.5,
+                          height: screen.height / 8,
+                        ),
+                        pswdFormField(
+                          width: screen.width / 1.5,
+                          height: screen.height / 8,
+                        ),
+                        submitButton(
+                          label: "Enter",
+                          width: screen.width / 3,
+                          height: screen.width / 9,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                // XY PLANE
+                _controllerXY.changeG(arrData[3]);
+                _controllerXY.changeHzXY(arrData[4]);
+                _controllerXY.verifyHzXY(arrData[4]);
+                _controllerXY.changePoints(arrData[0], arrData[1]);
+                // XZ PLANE
+                _controllerXZ.changeG(arrData[3]);
+                _controllerXZ.changeHzXZ(arrData[4]);
+                _controllerXZ.verifyHzXZ(arrData[4]);
+                _controllerXZ.changePoints(arrData[0], arrData[2]);
+                // _controllerXZ.changeAngleXZ(arrData[5]);
+                // ZYPLANE
+                _controllerZY.changeG(arrData[3]);
+                _controllerZY.changeHzZY(arrData[4]);
+                _controllerZY.verifyHzZY(arrData[4]);
+                _controllerZY.changePoints(arrData[1], arrData[2]);
+                // _controllerZY.changeAngleZY(arrData[6]);
+                return planes();
+              }
               break;
             case ConnectionState.none:
               return Container(
@@ -361,6 +390,97 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       },
     );
   }
+  // =========================================================================
+
+  Widget textField({
+    double width,
+    double height,
+    String label,
+  }) =>
+      Container(
+        width: width,
+        height: height,
+        child: TextFormField(
+          autofocus: false,
+          decoration: InputDecoration(
+            hintText: "Insert username",
+            labelStyle: TextStyle(color: Colors.black),
+          ),
+        ),
+      );
+
+  Widget pswdFormField({
+    double width,
+    double height,
+  }) =>
+      Container(
+        width: width,
+        height: height,
+        child: TextFormField(
+          autofocus: false,
+          decoration: InputDecoration(
+            hintText: "Insert passord",
+            labelStyle: TextStyle(color: Colors.black),
+            suffixIcon: GestureDetector(
+              onTap: () {
+                _controllerLogin.changeShowPswd();
+              },
+              child: ButtonTheme(
+                minWidth: 50,
+                height: 50,
+                child: Icon(
+                  _controllerLogin.showPswd
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+          obscureText: !_controllerLogin.showPswd,
+          validator: (String name) => "Insert password",
+        ),
+      );
+  Widget submitButton({
+    String label,
+    double width,
+    double height,
+  }) =>
+      Container(
+        width: width,
+        height: height,
+        child: FlatButton(
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => SismicHome(),
+            ),
+          ),
+          color: Colors.black,
+          child: Text(
+            "$label",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+        ),
+      );
+
+  // =========================================================================
+
+  Widget planes() => DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: _appBar(context: context),
+          body: TabBarView(
+            children: <Widget>[
+              _viewXY(),
+              _viewXZ(),
+              _viewZY(),
+            ],
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -376,13 +496,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                     image: AssetImage('assets/images/SBAGUIA.png'),
                   ),
                 )
-              : DefaultTabController(
-                  length: 3,
-                  child: Scaffold(
-                    appBar: _appBar(context: context),
-                    body: _body(context),
-                  ),
-                ),
+              : _stream(context: context),
         ),
       ),
     );

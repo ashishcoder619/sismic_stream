@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Quebec Black',
         primaryColor: Colors.white,  
       ),
-      home: Login(),
+      home: SismicHome(),
     );
   }
 }
