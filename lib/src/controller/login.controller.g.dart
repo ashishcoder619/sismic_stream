@@ -43,6 +43,23 @@ mixin _$LoginController on _LoginControllerBase, Store {
     }, _$showPswdAtom, name: '${_$showPswdAtom.name}_set');
   }
 
+  final _$rememberPswdAtom = Atom(name: '_LoginControllerBase.rememberPswd');
+
+  @override
+  bool get rememberPswd {
+    _$rememberPswdAtom.context.enforceReadPolicy(_$rememberPswdAtom);
+    _$rememberPswdAtom.reportObserved();
+    return super.rememberPswd;
+  }
+
+  @override
+  set rememberPswd(bool value) {
+    _$rememberPswdAtom.context.conditionallyRunInAction(() {
+      super.rememberPswd = value;
+      _$rememberPswdAtom.reportChanged();
+    }, _$rememberPswdAtom, name: '${_$rememberPswdAtom.name}_set');
+  }
+
   final _$_LoginControllerBaseActionController =
       ActionController(name: '_LoginControllerBase');
 
@@ -67,8 +84,19 @@ mixin _$LoginController on _LoginControllerBase, Store {
   }
 
   @override
+  dynamic changeRememberPswd() {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction();
+    try {
+      return super.changeRememberPswd();
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
-    final string = 'pswd: ${pswd.toString()},showPswd: ${showPswd.toString()}';
+    final string =
+        'pswd: ${pswd.toString()},showPswd: ${showPswd.toString()},rememberPswd: ${rememberPswd.toString()}';
     return '{$string}';
   }
 }

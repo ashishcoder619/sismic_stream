@@ -9,6 +9,9 @@ bool deviceConnected = false;
 bool oldDeviceConnected = false;
 
 
+// See the following for generating UUIDs:
+// https://www.uuidgenerator.net/
+
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
@@ -23,26 +26,35 @@ class MyServerCallbacks: public BLEServerCallbacks {
       deviceConnected = false;
     }
 };
+String defaultPswd = "root";
+String userPswd;
+String pswd;
+
+class MyCallbacks: public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic){
+    std::string value = pCharacteristic->getValue();
+    
+    if(value.length() > 0){
+    
+      Serial.println("**********");
+      Serial.print("New value: ");
+      
+      for(int i=0; i < value.length(); i++){
+        Serial.print(value[i]);
+        pswd += value[i];
+      }
+
+      Serial.println();
+      Serial.println("**********");
+      
+    }
+   
+  }
+};
 
 
-/*
-I/O define
-*/
-const int iled = 12;                                            //drive the led of sensor
-const int vout = 36;                                            //analog input
-
-/*
-variable
-*/
-int x, y, z, g, hz;
-int angleXZ, angleZY;
-
-void setup(void){
-  pinMode(iled, OUTPUT);
-  digitalWrite(iled, LOW);                                     //iled default closed
-  
-  Serial.begin(115200);                                         //send and receive at 115200 baud
-  Serial.print("*********************************** WaveShare ***********************************\n");
+void setup() {
+  Serial.begin(115200);
 
   // Create the BLE Device
   BLEDevice::init("ESP32_SISMIC");
@@ -63,6 +75,8 @@ void setup(void){
                       BLECharacteristic::PROPERTY_INDICATE
                     );
 
+  pCharacteristic->setCallbacks(new MyCallbacks());
+
   // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
   // Create a BLE Descriptor
   pCharacteristic->addDescriptor(new BLE2902());
@@ -78,6 +92,8 @@ void setup(void){
   BLEDevice::startAdvertising();
   Serial.println("Waiting a client connection to notify...");
 }
+
+int x, y, z, g, hz;
 
 int centerElipsePos(int x){
   int x2 = pow(x, 2);
@@ -130,23 +146,8 @@ int contElipse = 0;
 int contAngleXZ = 0;
 int contAngleZY = 0;
 
-void loop(void){
-   if(contAngleXZ < 5){
-     angleXZ = contAngleXZ;
-     contAngleXZ++;
-   }else{
-     angleXZ = contAngleXZ;
-     contAngleXZ = 0;
-   }
-   if(contAngleZY < 16){
-     angleZY = contAngleZY; 
-     contAngleZY++;
-   }else{
-     angleZY = contAngleZY; 
-     contAngleZY = 0;
-   }
-   
-   switch(contElipse){
+void loop() {
+     switch(contElipse){
        case 0:
         if((contQuad <= 150) && (positiveElipse == true)){
             x = contQuad;
@@ -196,36 +197,34 @@ void loop(void){
         }
         break;
    }
-  g = random(0,9);
-  hz = random(13, 15);
-  /*
-  display the result
-  */
-
-  // notify changed value
-    if (deviceConnected) {
-        String str = "";
-        str += x;
-        str += "|";
-        str += y;
-        str += "|";
-        str += z;
-        str += "|";
-        str += "2.";
-        str += g;
-        str += "|";
-        str += hz;
-//        str += "|";
-//        str += contAngleXZ;
-//        str += "|";
-//        str += contAngleZY;
-        
-        Serial.print("The current str is: ");
+   g = random(0,9);
+   hz = random(13, 15);
+   if (deviceConnected) {
+        String str = "";    
+        if(pswd == "root"){
+          str += x;
+          str += "|";
+          str += y;
+          str += "|";
+          str += z;
+          str += "|";
+          str += "2.";
+          str += g;
+          str += "|";
+          str += hz;
+        }else{
+          str += "0";
+          pswd = "";
+        }
+        Serial.print("Pswd: ");
+        Serial.print(pswd);
+        Serial.print("\n");
+        Serial.print("Str: ");
         Serial.print(str);
-        
+        Serial.print("\n");
         pCharacteristic->setValue((char*)str.c_str());
         pCharacteristic->notify();
-    }
+      }
     // disconnecting
     if (!deviceConnected && oldDeviceConnected) {
         delay(500); // give the bluetooth stack the chance to get things ready
@@ -238,6 +237,5 @@ void loop(void){
         // do stuff here on connecting
         oldDeviceConnected = deviceConnected;
     }
-  
-  delay(200);
+    delay(100);
 }

@@ -24,28 +24,23 @@ class FindDevicesScreen extends StatelessWidget {
               StreamBuilder<List<ScanResult>>(
                 stream: FlutterBlue.instance.scanResults,
                 initialData: [],
-                builder: (c, snapshot) {
-                  List<ScanResult> SISMIC_DEVICE = snapshot.data
-                      .where((e) => e.device.name == "ESP32_SISMIC")
-                      .toList();
-                  return SISMIC_DEVICE.isEmpty == false
-                      ? Center(
-                          child: ScanResultTile(
-                            result: SISMIC_DEVICE[0],
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  SISMIC_DEVICE[0].device.connect();
-                                  return PlanesPagePhone(
-                                    device: SISMIC_DEVICE[0].device,
-                                  );
-                                },
-                              ),
+                builder: (c, snapshot) => Column(
+                  children: snapshot.data
+                      .map(
+                        (r) => ScanResultTile(
+                          result: r,
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                r.device.connect();
+                                return PlanesPagePhone(device: r.device);
+                              },
                             ),
                           ),
-                        )
-                      : Container();
-                },
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
             ],
           ),

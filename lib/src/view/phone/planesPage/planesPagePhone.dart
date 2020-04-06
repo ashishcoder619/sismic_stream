@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -22,8 +23,6 @@ import 'package:sismic_stream/src/view/shared/position/xyPosition.dart';
 import 'package:sismic_stream/src/view/shared/position/xzPosition.dart';
 import 'package:sismic_stream/src/view/shared/position/zyPosition.dart';
 
-import '../../../login.dart';
-
 class PlanesPagePhone extends StatefulWidget {
   const PlanesPagePhone({Key key, this.device}) : super(key: key);
   final BluetoothDevice device;
@@ -41,6 +40,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   final _controllerLogin = LoginController();
   Stream<List<int>> stream;
   bool isReady;
+  BluetoothCharacteristic targetCharacteristic;
+  AnimationController animationController;
 
   @override
   void initState() {
@@ -71,6 +72,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       _Pop();
       return;
     }
+
     widget.device.disconnect();
   }
 
@@ -80,8 +82,31 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       return;
     }
 
-    List<BluetoothService> services = await widget.device.discoverServices();
-    services.forEach(
+    List<BluetoothService> servicesSending =
+        await widget.device.discoverServices();
+    servicesSending.forEach(
+      (service) {
+        if (service.uuid.toString() == SERVICE_UUID) {
+          service.characteristics.forEach(
+            (characteristic) {
+              if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
+                targetCharacteristic = characteristic;
+                if (mounted) {
+                  setState(
+                    () {
+                      isReady = true;
+                    },
+                  );
+                }
+              }
+            },
+          );
+        }
+      },
+    );
+    List<BluetoothService> servicesReceiving =
+        await widget.device.discoverServices();
+    servicesReceiving.forEach(
       (service) {
         if (service.uuid.toString() == SERVICE_UUID) {
           service.characteristics.forEach(
@@ -122,10 +147,12 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             ),
             actions: <Widget>[
               FlatButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('No')),
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('No'),
+              ),
               FlatButton(
                 onPressed: () {
+                  !_controllerLogin.rememberPswd ? writeData("Wrong") : false;
                   disconnectFromDevice();
                   Navigator.of(context).pop(true);
                 },
@@ -143,8 +170,14 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
 
   List<num> _listParser(List<int> dataFromDevice) {
     String stringData = utf8.decode(dataFromDevice);
-    print(stringData.split('|').map((e) => num.parse(e)).toList());
     return stringData.split('|').map((e) => num.parse(e)).toList();
+  }
+
+  writeData(String data) {
+    if (targetCharacteristic == null) return;
+
+    List<int> bytes = utf8.encode(data);
+    targetCharacteristic.write(bytes, withoutResponse: false);
   }
 
   // View Functions //
@@ -304,6 +337,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
       ),
     );
   }
+  // final animation = Tween(begin: 0, end: 2 * pi).animate(animationController);
 
   Widget _stream({BuildContext context}) {
     return StreamBuilder<List<int>>(
@@ -320,6 +354,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               Size screen = MediaQuery.of(context).size;
               List arrData = _listParser(snapshot.data);
               if (arrData.length == 1) {
+                if (_controllerLogin.contWrongPswd > 1)
+                  _controllerLogin.changeWrongPswd(true);
                 return Scaffold(
                   body: Center(
                     child: Column(
@@ -332,13 +368,33 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
                             height: screen.width / 2.5,
                           ),
                         ),
-                        textField(
-                          width: screen.width / 1.5,
+                        pswdFormField(
+                          width: screen.width / 2,
                           height: screen.height / 8,
                         ),
-                        pswdFormField(
-                          width: screen.width / 1.5,
-                          height: screen.height / 8,
+                        SizedBox(
+                          height: screen.height / 50,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Remember password",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Checkbox(
+                              value: _controllerLogin.rememberPswd,
+                              activeColor: Colors.black,
+                              onChanged: (value) {
+                                _controllerLogin.changeRememberPswd();
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: screen.width / 18,
                         ),
                         submitButton(
                           label: "Enter",
@@ -392,55 +448,6 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
   }
   // =========================================================================
 
-  Widget textField({
-    double width,
-    double height,
-    String label,
-  }) =>
-      Container(
-        width: width,
-        height: height,
-        child: TextFormField(
-          autofocus: false,
-          decoration: InputDecoration(
-            hintText: "Insert username",
-            labelStyle: TextStyle(color: Colors.black),
-          ),
-        ),
-      );
-
-  Widget pswdFormField({
-    double width,
-    double height,
-  }) =>
-      Container(
-        width: width,
-        height: height,
-        child: TextFormField(
-          autofocus: false,
-          decoration: InputDecoration(
-            hintText: "Insert passord",
-            labelStyle: TextStyle(color: Colors.black),
-            suffixIcon: GestureDetector(
-              onTap: () {
-                _controllerLogin.changeShowPswd();
-              },
-              child: ButtonTheme(
-                minWidth: 50,
-                height: 50,
-                child: Icon(
-                  _controllerLogin.showPswd
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-          obscureText: !_controllerLogin.showPswd,
-          validator: (String name) => "Insert password",
-        ),
-      );
   Widget submitButton({
     String label,
     double width,
@@ -450,11 +457,10 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
         width: width,
         height: height,
         child: FlatButton(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => SismicHome(),
-            ),
-          ),
+          onPressed: () {
+            _controllerLogin.changeContWrongPswd();
+            writeData(_controllerLogin.pswd);
+          },
           color: Colors.black,
           child: Text(
             "$label",
@@ -464,6 +470,50 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
             borderRadius: BorderRadius.circular(50),
           ),
         ),
+      );
+
+  Widget pswdFormField({
+    double width,
+    double height,
+  }) =>
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: width,
+            height: height,
+            child: TextFormField(
+              onChanged: (pswdWrited) =>
+                  _controllerLogin.changePswd(pswdWrited),
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: "Insert passord",
+                labelText: "Password",
+                labelStyle: TextStyle(
+                  color: _controllerLogin.wrongPswd ? Colors.red : Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+              obscureText: !_controllerLogin.showPswd,
+              validator: (String name) => "Insert password",
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              _controllerLogin.changeShowPswd();
+            },
+            child: Container(
+              child: Icon(
+                _controllerLogin.showPswd
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                color: _controllerLogin.wrongPswd ? Colors.red : Colors.black,
+              ),
+            ),
+          ),
+        ],
       );
 
   // =========================================================================
@@ -484,6 +534,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
 
   @override
   Widget build(BuildContext context) {
+    Size screen = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -491,8 +542,8 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
           child: !isReady
               ? Center(
                   child: Image(
-                    height: 150,
-                    width: 150,
+                    height: screen.height / 5,
+                    width: screen.height / 5,
                     image: AssetImage('assets/images/SBAGUIA.png'),
                   ),
                 )
