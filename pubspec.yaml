@@ -31,9 +31,11 @@ dependencies:
   geolocator: ^5.2.1
   mobx: 
   flutter_mobx:
+  get_it:
   
 
 dev_dependencies:
+
   mobx_codegen:
   build_runner:
   flutter_test:

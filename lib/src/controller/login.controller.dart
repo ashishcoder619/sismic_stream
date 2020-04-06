@@ -24,4 +24,6 @@ abstract class _LoginControllerBase with Store {
   changeWrongPswd(bool state) => wrongPswd = state;
   @action
   changeContWrongPswd() => contWrongPswd++;
+  @action
+  resetContWrongPswd() => contWrongPswd = 0;
 }

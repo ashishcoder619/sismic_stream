@@ -1,86 +1,70 @@
 import 'package:flutter/material.dart';
-import 'view/phone/blueAndLocationPage/blueAndLocation.dart';
+import 'package:get_it/get_it.dart';
 
-class SismicHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final double shortestSlide = MediaQuery.of(context).size.shortestSide;
-    final bool useMobileLayout = shortestSlide < 600;
+import 'controller/login.controller.dart';
 
-    return useMobileLayout ? BluetoothAndLocationPagePhone() : Container();
-  }
-}
-
-class Login extends StatefulWidget {
-  @override
-  _LoginState createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  bool _showPassword = true;
-  Widget textField({
-    double width,
-    double height,
-    String label,
-  }) =>
-      Container(
-        width: width,
-        height: height,
-        child: TextFormField(
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: "Insert username",
-            labelStyle: TextStyle(color: Colors.black),
-          ),
-        ),
-      );
-
+class UserLogin extends StatelessWidget {
+  final _controllerLogin = GetIt.I.get<LoginController>();
+  final Function writeData;
+  UserLogin({this.writeData});
   Widget pswdFormField({
     double width,
     double height,
   }) =>
-      Container(
-        width: width,
-        height: height,
-        child: TextFormField(
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: "Insert passord",
-            labelStyle: TextStyle(color: Colors.black),
-            suffixIcon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _showPassword = !_showPassword;
-                });
-              },
-              child: ButtonTheme(
-                minWidth: 50,
-                height: 50,
-                child: Icon(
-                  _showPassword ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.black,
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: width,
+            height: height,
+            child: TextFormField(
+              onChanged: (pswdWrited) =>
+                  _controllerLogin.changePswd(pswdWrited),
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: "Insert passord",
+                labelText: "Password",
+                labelStyle: TextStyle(
+                  color: _controllerLogin.wrongPswd ? Colors.red : Colors.black,
+                  fontSize: 20,
                 ),
+              ),
+              obscureText: !_controllerLogin.showPswd,
+              validator: (String name) => "Insert password",
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              _controllerLogin.changeShowPswd();
+            },
+            child: Container(
+              child: Icon(
+                _controllerLogin.showPswd
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                color: _controllerLogin.wrongPswd ? Colors.red : Colors.black,
               ),
             ),
           ),
-          obscureText: !_showPassword,
-          validator: (String name) => "Insert password",
-        ),
+        ],
       );
+
   Widget submitButton({
     String label,
     double width,
     double height,
+
   }) =>
       Container(
         width: width,
         height: height,
         child: FlatButton(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => SismicHome(),
-            ),
-          ),
+          onPressed: () {
+            _controllerLogin.changeContWrongPswd();
+            writeData(_controllerLogin.pswd);
+          },
           color: Colors.black,
           child: Text(
             "$label",
@@ -91,6 +75,7 @@ class _LoginState extends State<Login> {
           ),
         ),
       );
+
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
@@ -106,13 +91,33 @@ class _LoginState extends State<Login> {
                 height: screen.width / 2.5,
               ),
             ),
-            textField(
-              width: screen.width / 1.5,
+            pswdFormField(
+              width: screen.width / 2,
               height: screen.height / 8,
             ),
-            pswdFormField(
-              width: screen.width / 1.5,
-              height: screen.height / 8,
+            SizedBox(
+              height: screen.height / 50,
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Remember password",
+                  style: TextStyle(fontSize: 18),
+                ),
+                Checkbox(
+                  value: _controllerLogin.rememberPswd,
+                  activeColor: Colors.black,
+                  onChanged: (value) {
+                    _controllerLogin.changeRememberPswd();
+                  },
+                ),
+              ],
+            ),
+            SizedBox(
+              height: screen.width / 18,
             ),
             submitButton(
               label: "Enter",
