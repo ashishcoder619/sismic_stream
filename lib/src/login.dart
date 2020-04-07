@@ -3,11 +3,29 @@ import 'package:get_it/get_it.dart';
 
 import 'controller/login.controller.dart';
 
-class UserLogin extends StatelessWidget {
-  final _controllerLogin = GetIt.I.get<LoginController>();
+class UserLogin extends StatefulWidget {
   final Function writeData;
-  final errorRed = Colors.red;
+
   UserLogin({this.writeData});
+
+  @override
+  _UserLoginState createState() => _UserLoginState();
+}
+
+class _UserLoginState extends State<UserLogin>
+    with SingleTickerProviderStateMixin {
+  final _controllerLogin = GetIt.I.get<LoginController>();
+  final errorRed = Colors.red;
+  AnimationController animController;
+
+  @override
+  void initState() {
+    animController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    super.initState();
+  }
 
   OutlineInputBorder errorBorder() => OutlineInputBorder(
         borderSide: BorderSide(
@@ -75,7 +93,8 @@ class UserLogin extends StatelessWidget {
         child: FlatButton(
           onPressed: () {
             _controllerLogin.changeContWrongPswd();
-            writeData(_controllerLogin.pswd);
+            widget.writeData(_controllerLogin.pswd);
+            if (_controllerLogin.contWrongPswd > 1) animController.forward(from: 0.0);
           },
           color: Colors.black,
           child: Text(
@@ -91,6 +110,15 @@ class UserLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
+    final Animation<double> offsetAnimation = Tween(begin: 0.0, end: 24.0)
+        .chain(CurveTween(curve: Curves.elasticIn))
+        .animate(animController)
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              animController.reverse();
+            }
+          });
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -103,10 +131,20 @@ class UserLogin extends StatelessWidget {
                 height: screen.width / 2.5,
               ),
             ),
-            pswdFormField(
-              width: screen.width / 1.5,
-              height: screen.height / 10,
-            ),
+            AnimatedBuilder(
+                animation: offsetAnimation,
+                builder: (buildContext, child) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 24.0),
+                    padding: EdgeInsets.only(
+                        left: offsetAnimation.value + 24.0,
+                        right: 24.0 - offsetAnimation.value),
+                    child: pswdFormField(
+                      width: screen.width / 1.5,
+                      height: screen.height / 10,
+                    ),
+                  );
+                }),
             SizedBox(
               height: screen.height / 50,
             ),
