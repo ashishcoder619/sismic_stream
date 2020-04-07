@@ -6,56 +6,68 @@ import 'controller/login.controller.dart';
 class UserLogin extends StatelessWidget {
   final _controllerLogin = GetIt.I.get<LoginController>();
   final Function writeData;
+  final errorRed = Colors.red;
   UserLogin({this.writeData});
+
+  OutlineInputBorder errorBorder() => OutlineInputBorder(
+        borderSide: BorderSide(
+          color: errorRed,
+          width: 1.5,
+        ),
+      );
+
+  OutlineInputBorder normalBorder() => OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.black,
+          width: 1.5,
+        ),
+      );
+
   Widget pswdFormField({
     double width,
     double height,
   }) =>
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: width,
-            height: height,
-            child: TextFormField(
-              onChanged: (pswdWrited) =>
-                  _controllerLogin.changePswd(pswdWrited),
-              autofocus: true,
-              decoration: InputDecoration(
-                hintText: "Insert passord",
-                labelText: "Password",
-                labelStyle: TextStyle(
-                  color: _controllerLogin.wrongPswd ? Colors.red : Colors.black,
-                  fontSize: 20,
+      Container(
+        width: width,
+        height: height,
+        child: TextField(
+          onChanged: (pswdWrited) => _controllerLogin.changePswd(pswdWrited),
+          autofocus: true,
+          decoration: InputDecoration(
+            suffixIcon: GestureDetector(
+              onTap: () {
+                _controllerLogin.changeShowPswd();
+              },
+              child: Container(
+                child: Icon(
+                  _controllerLogin.showPswd
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: _controllerLogin.wrongPswd ? errorRed : Colors.black,
                 ),
               ),
-              obscureText: !_controllerLogin.showPswd,
-              validator: (String name) => "Insert password",
+            ),
+            errorText: _controllerLogin.wrongPswd ? "wrong password" : null,
+            errorStyle: TextStyle(
+              color: errorRed,
+            ),
+            focusedErrorBorder: errorBorder(),
+            focusedBorder: normalBorder(),
+            enabledBorder: normalBorder(),
+            labelText: "Password",
+            labelStyle: TextStyle(
+              fontSize: 20,
+              color: _controllerLogin.wrongPswd ? errorRed : Colors.black,
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              _controllerLogin.changeShowPswd();
-            },
-            child: Container(
-              child: Icon(
-                _controllerLogin.showPswd
-                    ? Icons.visibility
-                    : Icons.visibility_off,
-                color: _controllerLogin.wrongPswd ? Colors.red : Colors.black,
-              ),
-            ),
-          ),
-        ],
+          obscureText: !_controllerLogin.showPswd,
+        ),
       );
 
   Widget submitButton({
     String label,
     double width,
     double height,
-
   }) =>
       Container(
         width: width,
@@ -92,8 +104,8 @@ class UserLogin extends StatelessWidget {
               ),
             ),
             pswdFormField(
-              width: screen.width / 2,
-              height: screen.height / 8,
+              width: screen.width / 1.5,
+              height: screen.height / 10,
             ),
             SizedBox(
               height: screen.height / 50,

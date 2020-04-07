@@ -186,7 +186,7 @@ class _PlanesPagePhoneState extends State<PlanesPagePhone> {
               // Size screen = MediaQuery.of(context).size;
               List arrData = _listParser(snapshot.data);
               if (arrData.length == 1) {
-                if (_controllerLogin.contWrongPswd > 1)
+                if (_controllerLogin.contWrongPswd > 0)
                   _controllerLogin.changeWrongPswd(true);
                 return UserLogin(writeData: writeData);
               } else {

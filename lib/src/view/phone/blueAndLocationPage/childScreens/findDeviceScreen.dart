@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import '../../planesPage/planesPagePhone.dart';
+import 'package:sismic_stream/src/view/phone/planesPage/planesPageServices.dart';
 import '../bluetoothWidgets.dart';
 
 class FindDevicesScreen extends StatelessWidget {
